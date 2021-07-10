@@ -67,46 +67,15 @@ class CollegeFetchDetailsService
             return false;
         }
 
-        // #tpr-schools > div:nth-child(16) > div > div.enhanced-tertiary-nav.nav-inner-wrapper > div.hero-inner-wrapper > div > div.school-hero-section > div > div.school-headline-wrapper > h1 > span
-        // //*[@id="tpr-schools"]/div[10]/div/div[1]/div[2]/div/div[2]/div/div[1]/h1/span
-
-        // #SchoolProfileHeader2017 > section > div > div.col-lg-8.col-md-12.col-sm-12 > h1 > span
-        // //*[@id="SchoolProfileHeader2017"]/section/div/div[1]/h1/span
-
         $addressDom = $headerDom->filter('div > div > span:nth-child(1)');
         if ($addressDom->count()) {
             $array['address'] = $addressDom->text();
         }
 
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]
-
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[4]/div[2]/div[1]/div[2]/div[3]/div[2]
-
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]
-
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[3]/div[2]
-
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[3]/div[2]
-
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[2]
-
-        // #tpr-schools > div:nth-child(16) > div > main > section.col-sm-9.schoolsLHSContent.schools-wrapper > section.student-say-section > div.contacts-block
-
-        // #tpr-schools > div:nth-child(16) > div > main > section.col-sm-9.schoolsLHSContent.schools-wrapper > section.student-say-section > div.contacts-block > div.school-contacts.collapse > div:nth-child(1) > div.col-sm-9 > div:nth-child(3) > div:nth-child(2)
-        // //*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]
-
-
-        $contactsBlockDom = $crawler->filter('div.contacts-block');
-
-
-
-        if ($crawler->filterXPath('//*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]')->count()) {
-            $phoneDom = $crawler->filterXPath('//*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]');
+        $phoneDom = $crawler->filterXPath('//*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]');
+        if ($phoneDom->count()) {
             $array['phone'] = $phoneDom->text();
         }
-
-        // #tpr-schools > div:nth-child(16) > div > div.enhanced-tertiary-nav.nav-inner-wrapper > div.hero-inner-wrapper > div > div.school-hero-section > div > div.school-headline-wrapper > div > div > a
-        // #SchoolProfileHeader2017 > section > div > div.col-lg-8.col-md-12.col-sm-12 > div > div > a
 
         $siteDom = $headerDom->filter('div > div > a');
         if ($siteDom->count()) {
@@ -154,7 +123,6 @@ class CollegeFetchDetailsService
         }
         $contactsBlockDom = $crawler->filter('div.contacts-block');
 
-        $tt = $contactsBlockDom->text();
-
+        return $contactsBlockDom->text();
     }
 }
