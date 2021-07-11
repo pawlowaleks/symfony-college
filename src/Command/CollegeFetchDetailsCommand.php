@@ -16,7 +16,7 @@ use Symfony\Component\HttpClient\HttpClient;
 
 #[AsCommand(
     name: 'college:fetch-details',
-    description: 'Add a short description for your command',
+    description: 'Сохранить детальную информацию о колледже',
 )]
 class CollegeFetchDetailsCommand extends Command
 {
@@ -32,41 +32,28 @@ class CollegeFetchDetailsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+            ->addArgument('url', InputArgument::REQUIRED, 'Ссылка на страницу о колледже');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        $url = $input->getArgument('url');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $io->success("php bin/console college:fetch-details {$url}");
+
+        if (!$this->collegeFetchDetailsService->fetchDetails($url)) {
+            $io->error($this->collegeFetchDetailsService->getErrors());
+            return  Command::FAILURE;
         }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
-
-//        $url = 'https://www.princetonreview.com/college/harvard-college-1022984?ceid=cp-1022984';
-        $url = 'https://www.princetonreview.com/college/colby-college-1023880?ceid=cp-1022984';
-
-
-        $this->collegeFetchDetailsService->fetchDetails($url);
-
-        $debug = true;
-        if ($debug) {
-            $table = new Table($output);
-            $table
-                ->setHeaderTitle('College')
-                ->setHeaders(['Title', 'Address', 'Phone', 'Site'])
-                ->setRows([$this->collegeFetchDetailsService->getTableRow()]);
-            $table->render();
-        }
+        $table = new Table($output);
+        $table
+            ->setHeaderTitle('College')
+            ->setHeaders(['Title', 'Address', 'Phone', 'Site'])
+            ->setRows([$this->collegeFetchDetailsService->getTableRow()]);
+        $table->render();
 
         return Command::SUCCESS;
     }

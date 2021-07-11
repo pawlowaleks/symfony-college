@@ -52,7 +52,7 @@ class College implements TimestampableInterface
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $site;
 

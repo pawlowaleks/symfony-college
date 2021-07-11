@@ -47,4 +47,70 @@ class CollegeRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Сохранить Колледж
+     * @param string $title
+     * @param string|null $city
+     * @param string|null $state
+     * @param string|null $image
+     * @return bool
+     */
+    public function saveCollege(string $title, ?string $city, ?string $state, ?string $image = null): bool
+    {
+        $entityManager = $this->getEntityManager();
+
+        $college = $entityManager->getRepository(College::class)->findOneByTitle($title);
+        if (empty($college)) {
+            $college = new College();
+            $college->setTitle($title);
+        }
+
+        $college->setCity($city);
+        $college->setState($state);
+        $college->setImage($image);
+        $college->setUpdatedAt(new \DateTimeImmutable());
+
+        $entityManager->persist($college);
+        $entityManager->flush();
+        return true;
+    }
+
+    /**
+     * Сохранить детали Колледжа
+     * @param string $title
+     * @param string|null $address
+     * @param string|null $phone
+     * @param string|null $site
+     * @return bool
+     */
+    public function saveCollegeDetails(string $title, ?string $address, ?string $phone, ?string $site): bool
+    {
+        $entityManager = $this->getEntityManager();
+
+        $college = $entityManager->getRepository(College::class)->findOneByTitle($title);
+        if (empty($college)) {
+            $college = new College();
+            $college->setTitle($title);
+        }
+        $college->setAddress($address);
+        $college->setPhone($phone);
+        $college->setSite($site);
+
+        $college->setUpdatedAt(new \DateTimeImmutable());
+        $entityManager->persist($college);
+        $entityManager->flush();
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function deleteOldColleges($toTime): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'DELETE FROM `college` WHERE updated_at < :toTime';
+        $stmt = $conn->prepare($sql);
+        return $stmt->executeStatement(['toTime' => $toTime]);
+    }
+
 }

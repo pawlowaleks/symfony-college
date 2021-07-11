@@ -8,38 +8,65 @@ use App\Entity\College;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CollegeFetchDetailsService
 {
 
+    /** @var array $errors Массив с ощибками */
+    private $errors;
+
     private $entityManager;
+
+    /** @var array $collegeDetailsArray Массив с детальной информацией о Колледже для вывода в консоли */
+    private $collegeDetailsArray;
+
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-//        parent::__construct();
     }
 
-    private $collegeDetailsArray;
+    public function getErrors(): ?array
+    {
+        return $this->errors;
+    }
+    public function getLastError(): ?string
+    {
+        return end($this->errors);
+    }
+
 
     public function getTableRow(): ?array
     {
         return $this->collegeDetailsArray;
     }
 
+
+
     /**
-     * @param string $url Url с детальной информацией о колледже
+     * @param string $url Url с детальной информацией о колледже ['title', 'address', 'phone', 'site']
      * @return bool
      */
     public function fetchDetails(string $url): bool
     {
+        $this->errors = null;
         $httpClient = HttpClient::create();
-        $response = $httpClient->request(
-            'GET',
-            $url
-        );
 
-        $content = $response->getContent();
+        try {
+            $response = $httpClient->request(
+                'GET',
+                $url
+            );
+            if ($response->getStatusCode() != 200) {
+                $this->errors[] = "Error connect to {$url}";
+                return false;
+            }
+            $content = $response->getContent();
+        } catch(\Throwable $e) {
+            $this->errors[] = $e->getMessage();
+            return false;
+        }
 
         $array = [
             'title' => null,
@@ -54,16 +81,16 @@ class CollegeFetchDetailsService
         if (!$headerDom->count()) {
             $headerDom = $crawler->filterXPath('//*[@id="tpr-schools"]/div[10]/div/div[1]/div[2]/div/div[2]/div/div[1]');
             if (!$headerDom->count()) {
+                $this->errors[] = "Empty headerDom";
                 return false;
             }
         }
-
-        // Название Колледжа | Адрес | Телефон | Сайт
 
         $titleDom = $headerDom->filter('h1 > span');
         if ($titleDom->count()) {
             $array['title'] = $titleDom->text();
         } else {
+            $this->errors[] = "Empty title";
             return false;
         }
 
@@ -72,10 +99,7 @@ class CollegeFetchDetailsService
             $array['address'] = $addressDom->text();
         }
 
-        $phoneDom = $crawler->filterXPath('//*[@id="tpr-schools"]/div[10]/div/main/section[1]/section[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]');
-        if ($phoneDom->count()) {
-            $array['phone'] = $phoneDom->text();
-        }
+        $array['phone'] = self::findPhone($crawler);
 
         $siteDom = $headerDom->filter('div > div > a');
         if ($siteDom->count()) {
@@ -84,45 +108,38 @@ class CollegeFetchDetailsService
 
         $this->collegeDetailsArray = $array;
 
-        $this->saveCollegeDetails($array['title'], $array['address'], $array['phone'], $array['site']);
+        $collegeRepository = $this->entityManager->getRepository(College::class);
+
+        $saveResult = $collegeRepository->saveCollegeDetails($array['title'], $array['address'], $array['phone'], $array['site']);
+        if (!$saveResult) {
+            $this->errors[] = 'Save error';
+            return false;
+        }
         return true;
 
     }
 
     /**
-     * Сохранить детали Колледжа
-     * @param string $title
-     * @param string|null $address
-     * @param string|null $phone
-     * @param string|null $site
-     * @return bool
+     * Получить номер телефона
+     * @param Crawler $crawler
+     * @return string|null
      */
-    private function saveCollegeDetails(string $title, ?string $address, ?string $phone, ?string $site): bool
-    {
-        $entityManager = $this->entityManager;
-
-        $college = $entityManager->getRepository(College::class)->findOneByTitle($title);
-        if (empty($college)) {
-            $college = new College();
-            $college->setTitle($title);
-        }
-        $college->setAddress($address);
-        $college->setPhone($phone);
-        $college->setSite($site);
-
-        $entityManager->persist($college);
-        $entityManager->flush();
-        return true;
-    }
-
-
-    private function findPhone(Crawler $crawler): ?string
+    private static function findPhone(Crawler $crawler): ?string
     {
         if (!$crawler->filter('div.contacts-block')->count()) {
             return null;
         }
-        $contactsBlockDom = $crawler->filter('div.contacts-block');
-
-        return $contactsBlockDom->text();
+        $contactsDom = $crawler->filter('div.school-contacts > div:nth-child(1) > div.col-sm-9 > div.row')->each(function ($node, $i) {
+            return $node->text();
+        });
+        $phone = null;
+        foreach ($contactsDom as $text) {
+            if (strpos($text, 'Phone') !== false) {
+                $phone = trim(mb_substr($text, 6));
+                break;
+            }
+        }
+        return $phone;
     }
+
 }

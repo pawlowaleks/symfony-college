@@ -16,15 +16,17 @@ class CollegeFetchListService
 
     private $entityManager;
     private $tableRows;
+
+    private $detailsUrls;
+
     private $nextUrl;
 
-    private $collegeFetchDetailsService;
+    /** @var array $errors Массив с ощибками */
+    private $errors;
 
-    public function __construct(EntityManagerInterface $entityManager, CollegeFetchDetailsService $collegeFetchDetailsService)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->collegeFetchDetailsService = $collegeFetchDetailsService;
-//        parent::__construct();
     }
 
     /**
@@ -37,6 +39,11 @@ class CollegeFetchListService
         return $this->tableRows;
     }
 
+    public function getDetailsUrls(): ?array
+    {
+        return $this->detailsUrls;
+    }
+
     /**
      * Получить url следующей страницы
      * @return string|null
@@ -47,22 +54,41 @@ class CollegeFetchListService
         return $this->nextUrl;
     }
 
+    public function getErrors(): ?array
+    {
+        return $this->errors;
+    }
+    public function getLastError(): ?string
+    {
+        return end($this->errors);
+    }
+
 
     /**
      * Получить Колледжи с сайта
      * @param string $url url сайта со страницей со списком колледжей
      * @return string|null
      */
-    public function fetchCollegesFromPage(string $url, bool $fetchDetails = false): bool
+    public function fetchCollegesFromPage(string $url): bool
     {
+        $this->errors = null;
         $httpClient = HttpClient::create();
+        try {
+            $response = $httpClient->request(
+                'GET',
+                $url
+            );
+            if ($response->getStatusCode() != 200) {
+                $this->errors[] = "Error connect to {$url}";
+                return false;
+            }
+            $content = $response->getContent();
+        } catch(\Throwable $e) {
+            $this->errors[] = $e->getMessage();
+            return false;
+        }
 
-        $response = $httpClient->request(
-            'GET',
-            $url
-        );
 
-        $content = $response->getContent();
 
         $crawler = new Crawler($content, $url);
         $colleges = $crawler->filter('#filtersForm > div.col-sm-9.desktop-74p-width')->filter('div.row.vertical-padding');
@@ -76,15 +102,6 @@ class CollegeFetchListService
 
         $this->nextUrl = $this->findNextUrl($crawler);
 
-        if ($fetchDetails) {
-            foreach ($this->tableRows as $tableRow) {
-                if (!empty($tableRow['detailsUrl'])) {
-                    $this->collegeFetchDetailsService->fetchDetails($tableRow['detailsUrl']);
-                }
-
-            }
-        }
-
         return true;
     }
 
@@ -94,23 +111,22 @@ class CollegeFetchListService
      */
     private function fetchCollege(Crawler $element): bool
     {
-
         $array = [
             'title' => null,
             'city' => null,
             'state' => null,
             'image' => null,
-            'detailsUrl' => null
         ];
+
 
         $titleDom = $element->filter('div > div > div > h2 > a');
         if (!$titleDom->count()) {
+            $this->errors[] = "Empty title";
             return false;
         }
         $array['title'] = $titleDom->text();
         $detailsUrlDom = $titleDom->link();
-        $array['detailsUrl'] = $detailsUrlDom->getUri();
-
+        $this->detailsUrls[] = $detailsUrlDom->getUri();
 
         $imageDom = $element->filter('div > a > img');
         if ($imageDom->count()) {
@@ -127,38 +143,14 @@ class CollegeFetchListService
 
         if (!empty($array)) {
             $this->tableRows[] = $array;
-            $this->saveCollege($array['title'], $array['city'], $array['state'], $array['image']);
+            $collegeRepository = $this->entityManager->getRepository(College::class);
+            $saveResult = $collegeRepository->saveCollege($array['title'], $array['city'], $array['state'], $array['image']);
+            if (!$saveResult) {
+                $this->errors[] = 'Save error';
+                return false;
+            }
         }
 
-
-
-        return true;
-    }
-
-    /**
-     * Сохранить Колледж
-     * @param string $title
-     * @param string|null $city
-     * @param string|null $state
-     * @param string|null $image
-     * @return bool
-     */
-    private function saveCollege(string $title, ?string $city, ?string $state, ?string $image = null): bool
-    {
-        $entityManager = $this->entityManager;
-
-        $college = $entityManager->getRepository(College::class)->findOneByTitle($title);
-        if (empty($college)) {
-            $college = new College();
-            $college->setTitle($title);
-        }
-
-        $college->setCity($city);
-        $college->setState($state);
-        $college->setImage($image);
-
-        $entityManager->persist($college);
-        $entityManager->flush();
         return true;
     }
 
@@ -174,6 +166,5 @@ class CollegeFetchListService
         }
         return $crawler->selectLink('Next >')->link()->getUri();
     }
-
 
 }
