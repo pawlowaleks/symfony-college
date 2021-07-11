@@ -26,7 +26,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 #[AsCommand(
     name: 'college:fetch-list',
-    description: 'Add a short description for your command',
+    description: 'Сохранить список колледжей',
 )]
 class CollegeFetchListCommand extends Command
 {
