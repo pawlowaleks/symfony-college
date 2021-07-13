@@ -4,8 +4,82 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "591b5d115c2590d346b7b09544bd9314",
+    "content-hash": "36508418d2187ba2f5579f233704f383",
     "packages": [
+        {
+            "name": "andanteproject/timestampable-bundle",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andanteproject/timestampable-bundle.git",
+                "reference": "84aef390eb9dc5fc5d76bee00edbc0f4134f8122"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andanteproject/timestampable-bundle/zipball/84aef390eb9dc5fc5d76bee00edbc0f4134f8122",
+                "reference": "84aef390eb9dc5fc5d76bee00edbc0f4134f8122",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^2.13 || ^3.0",
+                "doctrine/event-manager": "^1.0",
+                "php": "^7.4 || ^8.0",
+                "symfony/framework-bundle": "^4.4 | ^5.0"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "^2.2",
+                "doctrine/orm": "^2.6.3",
+                "ext-json": "*",
+                "friendsofphp/php-cs-fixer": "^2.18",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^0.12.78",
+                "phpstan/phpstan-phpunit": "^0.12.17",
+                "phpstan/phpstan-symfony": "^0.12.20",
+                "phpunit/phpunit": "^9.5",
+                "roave/security-advisories": "dev-master",
+                "symfony/yaml": "^5.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Andante\\TimestampableBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andante Project",
+                    "homepage": "https://github.com/andanteproject"
+                },
+                {
+                    "name": "Cristoforo Cervino",
+                    "homepage": "https://github.com/cristoforocervino"
+                },
+                {
+                    "name": "Luca Cividini",
+                    "homepage": "https://github.com/lucacividini"
+                }
+            ],
+            "description": "A Symfony Bundle to handle entities createdAt and updatedAt dates with Doctrine",
+            "keywords": [
+                "PHP7",
+                "doctrine",
+                "doctrine-orm",
+                "php",
+                "php74",
+                "symfony",
+                "symfony-bundle",
+                "timestampable"
+            ],
+            "support": {
+                "issues": "https://github.com/andanteproject/timestampable-bundle/issues",
+                "source": "https://github.com/andanteproject/timestampable-bundle/tree/1.0.1"
+            },
+            "time": "2021-05-02T09:53:47+00:00"
+        },
         {
             "name": "behat/transliterator",
             "version": "v1.3.0",
