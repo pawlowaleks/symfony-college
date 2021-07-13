@@ -8,6 +8,7 @@ use App\Entity\College;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
+use Throwable;
 
 class CollegeFetchListService
 {
@@ -58,6 +59,7 @@ class CollegeFetchListService
     {
         return $this->errors;
     }
+
     public function getLastError(): ?string
     {
         return end($this->errors);
@@ -83,11 +85,10 @@ class CollegeFetchListService
                 return false;
             }
             $content = $response->getContent();
-        } catch(\Throwable $e) {
+        } catch (Throwable $e) {
             $this->errors[] = $e->getMessage();
             return false;
         }
-
 
 
         $crawler = new Crawler($content, $url);

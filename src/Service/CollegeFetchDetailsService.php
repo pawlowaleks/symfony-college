@@ -8,7 +8,7 @@ use App\Entity\College;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Throwable;
 
 class CollegeFetchDetailsService
 {
@@ -31,6 +31,7 @@ class CollegeFetchDetailsService
     {
         return $this->errors;
     }
+
     public function getLastError(): ?string
     {
         return end($this->errors);
@@ -41,7 +42,6 @@ class CollegeFetchDetailsService
     {
         return $this->collegeDetailsArray;
     }
-
 
 
     /**
@@ -63,7 +63,7 @@ class CollegeFetchDetailsService
                 return false;
             }
             $content = $response->getContent();
-        } catch(\Throwable $e) {
+        } catch (Throwable $e) {
             $this->errors[] = $e->getMessage();
             return false;
         }
