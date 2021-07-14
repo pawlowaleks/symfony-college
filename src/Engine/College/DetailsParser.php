@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Engine\Colledge;
+namespace App\Engine\College;
 
 
 use App\Engine\DetailsItem;
@@ -48,6 +48,8 @@ class DetailsParser
         if ($siteDom->count()) {
             $detailsItem->setSite($siteDom->attr('href'));
         }
+
+//        $det
 
         return $detailsItem;
     }

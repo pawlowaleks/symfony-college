@@ -4,8 +4,8 @@
 namespace App\Service;
 
 
-use App\Engine\Colledge\DetailsEngine;
-use App\Engine\Colledge\DetailsParser;
+use App\Engine\College\DetailsEngine;
+use App\Engine\College\DetailsParser;
 use App\Engine\DetailsItem;
 use App\Entity\College;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,6 +51,13 @@ class CollegeFetchDetailsService
         $detailsItem = $detailsEngine->load($url);
         $this->setDetailsItem($detailsItem);
 
+        $this->saveCollege();
+
+        return true;
+    }
+
+    private function saveCollege(): bool
+    {
         $collegeRepository = $this->entityManager->getRepository(College::class);
         $collegeRepository->saveCollegeDetails($this->getDetailsItem());
         return true;

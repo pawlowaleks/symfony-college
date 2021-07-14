@@ -2,11 +2,12 @@
 
 namespace App\Command;
 
-use App\Entity\College;
+use App\Engine\ListResult;
 use App\Service\CollegeFetchDetailsService;
 use App\Service\CollegeFetchListService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -60,61 +61,60 @@ class CollegeFetchListCommand extends Command
         /** @var string $url Ссылка на страницу со списком колледжей */
         $url = CollegeFetchListService::URL_START;
 
-        /** @var array $rows массив Колледжей для вывода в консоли [['title', 'city', 'state', 'image']] */
-        $rows = null;
-
-        /** @var array $detailsUrls Массив с ссылками на детали каждого колледжа ['url1', 'url2', 'url3'] */
-        $detailsUrls = [];
-
         $pageCount = 1;
         while (!empty($url)) {
             $io->info("Page: {$pageCount}\tUrl: {$url}");
 
-            if (!$this->collegeFetchListService->fetchCollegesFromPage($url)) {
-                $io->error("Error list page {$url}");
-                $io->error($this->collegeFetchListService->getErrors());
-                return false;
+            try {
+                $this->collegeFetchListService->fetchCollegesFromPage($url);
+            } catch (Exception $e) {
+                $io->error($e->getMessage());
+                return Command::FAILURE;
             }
-            $url = $this->collegeFetchListService->getNextUrl();
-            $rows = $this->collegeFetchListService->getTableRows();
+
+            $listResult = $this->collegeFetchListService->getListResult();
+            if (empty($listResult)) {
+                $pageCount++;
+                $io->warning('Empty listResult');
+                continue;
+            }
 
             $table = new Table($output);
             $table
                 ->setHeaderTitle('Colleges')
                 ->setFooterTitle("Page {$pageCount}")
-                ->setHeaders(['Title', 'City', 'State', 'Image'])
-                ->setRows($rows);
+                ->setHeaders(ListResult::getTitleLabels())
+                ->setRows($listResult->asArray());
             $table->render();
 
-            $detailsUrls = $this->collegeFetchListService->getDetailsUrls();
-
+            $url = $listResult->getNextUrl();
             $pageCount++;
         }
 
-        $totalCount = count($detailsUrls);
-        $io->success("Total colleges: {$totalCount}");
+//        $totalCount = count($detailsUrls);
+//        $io->success("Total colleges: {$totalCount}");
+//
+//        if ($withDetails) {
+//            $io->text('Fetch details');
+//            $detailsCount = 1;
+//            foreach ($detailsUrls as $detailsUrl) {
+//                if (empty($detailsUrl)) {
+//                    continue;
+//                }
+//                $io->text("#{$detailsCount}: {$detailsUrl}");
+//                $detailsResult = $this->collegeFetchDetailsService->fetchDetails($detailsUrl);
+//                if (!$detailsResult) {
+//                    $io->warning("Details error. url={$detailsUrl}");
+//                    $io->warning($this->collegeFetchDetailsService->getErrors());
+//                }
+//                $detailsCount++;
+//            }
+//        }
 
-        if ($withDetails) {
-            $io->text('Fetch details');
-            $detailsCount = 1;
-            foreach ($detailsUrls as $detailsUrl) {
-                if (empty($detailsUrl)) {
-                    continue;
-                }
-                $io->text("#{$detailsCount}: {$detailsUrl}");
-                $detailsResult = $this->collegeFetchDetailsService->fetchDetails($detailsUrl);
-                if (!$detailsResult) {
-                    $io->warning("Details error. url={$detailsUrl}");
-                    $io->warning($this->collegeFetchDetailsService->getErrors());
-                }
-                $detailsCount++;
-            }
-        }
-
-        // Удалить устаревшие колледжи, которых не было в полученном списке
-        $repository = $this->entityManager->getRepository(College::class);
-        $deleteResult = $repository->deleteOldColleges($startTimeString);
-        $io->text("Deleted {$deleteResult} old colleges");
+//        // Удалить устаревшие колледжи, которых не было в полученном списке
+//        $repository = $this->entityManager->getRepository(College::class);
+//        $deleteResult = $repository->deleteOldColleges($startTimeString);
+//        $io->text("Deleted {$deleteResult} old colleges");
 
         return Command::SUCCESS;
     }

@@ -22,6 +22,35 @@ class ListItem extends Item
      */
     private ?string $image;
 
+    private ?string $detailsUrl;
+
+    /**
+     * @return string|null
+     */
+    public function getDetailsUrl(): ?string
+    {
+        return $this->detailsUrl;
+    }
+
+    /**
+     * @param string|null $detailsUrl
+     */
+    public function setDetailsUrl(?string $detailsUrl): void
+    {
+        $this->detailsUrl = $detailsUrl;
+    }
+
+    /**
+     * ListItem constructor.
+     */
+    public function __construct()
+    {
+        $this->city = null;
+        $this->state = null;
+        $this->image = null;
+        $this->detailsUrl = null;
+    }
+
     /**
      * @return string|null
      */
@@ -68,6 +97,20 @@ class ListItem extends Item
     public function setImage(?string $image): void
     {
         $this->image = $image;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function asArray(): array
+    {
+        return [
+            $this->getTitle(),
+            $this->getCity(),
+            $this->getState(),
+            $this->getImage()
+        ];
     }
 
 }

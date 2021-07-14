@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Engine\Colledge;
+namespace App\Engine\College;
 
 
 use App\Engine\DetailsItem;
