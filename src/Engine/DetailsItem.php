@@ -64,6 +64,24 @@ class DetailsItem extends Item
         $this->site = $site;
     }
 
+    /**
+     *
+     * @return array
+     */
+    public function asArray(): array
+    {
+        return [
+            $this->getTitle(),
+            $this->getAddress(),
+            $this->getPhone(),
+            $this->getSite()
+        ];
+    }
+
+    public static function getTitleLabels(): array
+    {
+        return ['Title', 'Address', 'Phone', 'Site'];
+    }
 
 
 }

@@ -2,8 +2,13 @@
 
 namespace App\Repository;
 
+use App\Engine\DetailsItem;
+use App\Engine\ListItem;
 use App\Entity\College;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,32 +48,30 @@ class CollegeRepository extends ServiceEntityRepository
             ->andWhere('c.title = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     /**
      * Сохранить Колледж
-     * @param string $title
-     * @param string|null $city
-     * @param string|null $state
-     * @param string|null $image
+     * @param ListItem $item
      * @return bool
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function saveCollege(string $title, ?string $city, ?string $state, ?string $image = null): bool
+    public function saveCollege(ListItem $item): bool
     {
         $entityManager = $this->getEntityManager();
 
-        $college = $entityManager->getRepository(College::class)->findOneByTitle($title);
+        $college = $entityManager->getRepository(College::class)->findOneByTitle($item->getTitle());
         if (empty($college)) {
             $college = new College();
-            $college->setTitle($title);
+            $college->setTitle($item->getTitle());
         }
 
-        $college->setCity($city);
-        $college->setState($state);
-        $college->setImage($image);
-        $college->setUpdatedAt(new \DateTimeImmutable());
+        $college->setCity($item->getCity());
+        $college->setState($item->getState());
+        $college->setImage($item->getImage());
+        $college->setUpdatedAt(new DateTimeImmutable());
 
         $entityManager->persist($college);
         $entityManager->flush();
@@ -77,33 +80,33 @@ class CollegeRepository extends ServiceEntityRepository
 
     /**
      * Сохранить детали Колледжа
-     * @param string $title
-     * @param string|null $address
-     * @param string|null $phone
-     * @param string|null $site
+     * @param DetailsItem $item
      * @return bool
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function saveCollegeDetails(string $title, ?string $address, ?string $phone, ?string $site): bool
+    public function saveCollegeDetails(DetailsItem $item): bool
     {
         $entityManager = $this->getEntityManager();
 
-        $college = $entityManager->getRepository(College::class)->findOneByTitle($title);
+        $college = $entityManager->getRepository(College::class)->findOneByTitle($item->getTitle());
         if (empty($college)) {
             $college = new College();
-            $college->setTitle($title);
+            $college->setTitle($item->getTitle());
         }
-        $college->setAddress($address);
-        $college->setPhone($phone);
-        $college->setSite($site);
+        $college->setAddress($item->getAddress());
+        $college->setPhone($item->getPhone());
+        $college->setSite($item->getSite());
+        $college->setUpdatedAt(new DateTimeImmutable());
 
-        $college->setUpdatedAt(new \DateTimeImmutable());
         $entityManager->persist($college);
         $entityManager->flush();
         return true;
     }
 
     /**
-     * @return bool
+     * Удалить устаревшие колледжи
+     * @return int Количество удаленных колледжей
      */
     public function deleteOldColleges($toTime): int
     {

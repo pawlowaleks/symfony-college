@@ -11,7 +11,7 @@ class Item
     /**
      * @var string $title Название колледжа
      */
-    private string $title;
+    protected string $title;
 
     /**
      * @return string

@@ -5,6 +5,10 @@ namespace App\Engine\Colledge;
 
 
 use App\Engine\DetailsItem;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class DetailsEngine
@@ -31,19 +35,22 @@ class DetailsEngine
         $this->client = $client;
     }
 
+    /**
+     * @param string $url
+     * @return DetailsItem|null
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     public function load(string $url): ?DetailsItem
     {
-        try {
-            $response = $this->client->request('GET', $url);
-            if ($response->getStatusCode() != 200) {
+        $response = $this->client->request('GET', $url);
+        if ($response->getStatusCode() != 200) {
 //                $this->errors[] = "Error connect to {$url}";
-                return null;
-            }
-            $content = $response->getContent();
-        } catch (\Throwable $e) {
-//            $this->errors[] = $e->getMessage();
             return null;
         }
+        $content = $response->getContent();
 
         return $this->parser->parse($url, $content);
     }
