@@ -3,7 +3,7 @@
 
 namespace App\Engine\College;
 
-use App\Engine\Entity\DetailsItemInterface;
+use App\Engine\Entity\DetailsItem;
 
 /**
  * Interface DetailsEngineInterface
@@ -13,7 +13,7 @@ interface DetailsEngineInterface
 {
     /**
      * @param string $url
-     * @return DetailsItemInterface|null
+     * @return DetailsItem|null
      */
-    public function load(string $url): ?DetailsItemInterface;
+    public function load(string $url): ?DetailsItem;
 }

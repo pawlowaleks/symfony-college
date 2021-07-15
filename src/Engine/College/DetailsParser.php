@@ -3,21 +3,20 @@
 namespace App\Engine\College;
 
 use App\Engine\Entity\DetailsItem;
-use App\Engine\Entity\DetailsItemInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class DetailsParser
  * @package App\Engine\College
  */
-class DetailsParser
+class DetailsParser implements DetailsParserInterface
 {
     /**
      * @param string $url
      * @param string $content
      * @return DetailsItem|null
      */
-    public function parse(string $url, string $content): ?DetailsItemInterface
+    public function parse(string $url, string $content): ?DetailsItem
     {
         $crawler = new Crawler($content, $url);
 

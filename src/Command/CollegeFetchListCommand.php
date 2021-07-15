@@ -49,8 +49,7 @@ class CollegeFetchListCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->addOption('with-details', null, InputOption::VALUE_NONE, 'Включить сохранение детальной информации');
+        $this->addOption('with-details', null, InputOption::VALUE_NONE, 'Включить сохранение детальной информации');
     }
 
     /**

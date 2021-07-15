@@ -2,7 +2,7 @@
 
 namespace App\Engine\College;
 
-use App\Engine\Entity\ListResultInterface;
+use App\Engine\Entity\ListResult;
 
 /**
  * Interface ListEngineInterface
@@ -12,7 +12,7 @@ interface ListEngineInterface
 {
     /**
      * @param string $url
-     * @return ListResultInterface|null
+     * @return ListResult|null
      */
-    public function load(string $url): ?ListResultInterface;
+    public function load(string $url): ?ListResult;
 }

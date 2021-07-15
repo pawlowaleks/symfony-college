@@ -1,11 +1,8 @@
 <?php
 
-
 namespace App\Engine\College;
 
-
 use App\Engine\Entity\ListResult;
-use App\Engine\Entity\ListResultInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -15,21 +12,21 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ListEngine implements ListEngineInterface
 {
     /**
-     * @var ListParser
+     * @var ListParserInterface
      */
-    private $parser;
+    private ListParserInterface $parser;
 
     /**
      * @var HttpClientInterface
      */
-    private $client;
+    private HttpClientInterface $client;
 
     /**
      * DetailsEngine constructor.
      * @param ListParser $parser
      * @param HttpClientInterface $client
      */
-    public function __construct(ListParser $parser, HttpClientInterface $client)
+    public function __construct(ListParserInterface $parser, HttpClientInterface $client)
     {
         $this->parser = $parser;
         $this->client = $client;
@@ -39,7 +36,7 @@ class ListEngine implements ListEngineInterface
      * @param string $url
      * @return ListResult|null
      */
-    public function load(string $url): ?ListResultInterface
+    public function load(string $url): ?ListResult
     {
         $response = $this->client->request('GET', $url);
         if ($response->getStatusCode() != 200) {

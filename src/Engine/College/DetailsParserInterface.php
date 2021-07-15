@@ -4,7 +4,7 @@
 namespace App\Engine\College;
 
 
-use App\Engine\Entity\DetailsItemInterface;
+use App\Engine\Entity\DetailsItem;
 
 /**
  * Interface DetailsParserInterface
@@ -15,7 +15,7 @@ interface DetailsParserInterface
     /**
      * @param string $url
      * @param string $content
-     * @return DetailsItemInterface|null
+     * @return DetailsItem|null
      */
-    public function parse(string $url, string $content): ?DetailsItemInterface;
+    public function parse(string $url, string $content): ?DetailsItem;
 }

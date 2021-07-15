@@ -1,13 +1,9 @@
 <?php
 
-
 namespace App\Engine\College;
 
-
 use App\Engine\Entity\ListItem;
-use App\Engine\Entity\ListItemInterface;
 use App\Engine\Entity\ListResult;
-use App\Engine\Entity\ListResultInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -20,9 +16,9 @@ class ListParser implements ListParserInterface
     /**
      * @param string $url
      * @param string $content
-     * @return ListResultInterface|null
+     * @return ListResult|null
      */
-    public function parse(string $url, string $content): ?ListResultInterface
+    public function parse(string $url, string $content): ?ListResult
     {
         $crawler = new Crawler($content, $url);
         $colleges = $crawler->filter('#filtersForm > div.col-sm-9.desktop-74p-width')->filter('div.row.vertical-padding');
@@ -53,7 +49,7 @@ class ListParser implements ListParserInterface
      * @param Crawler $element
      * @return ListItem|null
      */
-    private function parseItem(Crawler $element): ?ListItemInterface
+    private function parseItem(Crawler $element): ?ListItem
     {
         $listItem = new ListItem();
 

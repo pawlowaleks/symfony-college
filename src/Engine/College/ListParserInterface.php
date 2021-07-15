@@ -2,7 +2,7 @@
 
 namespace App\Engine\College;
 
-use App\Engine\Entity\ListResultInterface;
+use App\Engine\Entity\ListResult;
 
 /**
  * Interface ListParserInterface
@@ -13,7 +13,7 @@ interface ListParserInterface
     /**
      * @param string $url
      * @param string $content
-     * @return ListResultInterface|null
+     * @return ListResult|null
      */
-    public function parse(string $url, string $content): ?ListResultInterface;
+    public function parse(string $url, string $content): ?ListResult;
 }

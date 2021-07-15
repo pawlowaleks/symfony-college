@@ -38,8 +38,7 @@ class CollegeFetchDetailsCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('url', InputArgument::REQUIRED, 'Ссылка на страницу о колледже');
+        $this->addArgument('url', InputArgument::REQUIRED, 'Ссылка на страницу о колледже');
     }
 
     /**

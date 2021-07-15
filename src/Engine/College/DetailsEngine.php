@@ -5,7 +5,6 @@ namespace App\Engine\College;
 
 
 use App\Engine\Entity\DetailsItem;
-use App\Engine\Entity\DetailsItemInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -20,21 +19,21 @@ class DetailsEngine implements DetailsEngineInterface
 {
 
     /**
-     * @var DetailsParser
+     * @var DetailsParserInterface
      */
-    private $parser;
+    private DetailsParserInterface $parser;
 
     /**
      * @var HttpClientInterface
      */
-    private $client;
+    private HttpClientInterface $client;
 
     /**
      * DetailsEngine constructor.
-     * @param DetailsParser $parser
+     * @param DetailsParserInterface $parser
      * @param HttpClientInterface $client
      */
-    public function __construct(DetailsParser $parser, HttpClientInterface $client)
+    public function __construct(DetailsParserInterface $parser, HttpClientInterface $client)
     {
         $this->parser = $parser;
         $this->client = $client;
@@ -48,7 +47,7 @@ class DetailsEngine implements DetailsEngineInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function load(string $url): ?DetailsItemInterface
+    public function load(string $url): ?DetailsItem
     {
         $response = $this->client->request('GET', $url);
         if ($response->getStatusCode() != 200) {
