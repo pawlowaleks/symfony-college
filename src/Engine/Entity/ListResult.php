@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Engine;
+namespace App\Engine\Entity;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Traversable;
 
-class ListResult implements Countable, IteratorAggregate
+/**
+ * Class ListResult
+ * @package App\Engine\Entity
+ */
+class ListResult implements Countable, IteratorAggregate, ListResultInterface
 {
     /**
      * @var int $count
@@ -19,6 +23,9 @@ class ListResult implements Countable, IteratorAggregate
      */
     private array $items = [];
 
+    /**
+     * @var string|null
+     */
     private ?string $nextUrl = null;
 
     /**
@@ -53,6 +60,9 @@ class ListResult implements Countable, IteratorAggregate
         $this->detailUrls = $detailUrls;
     }
 
+    /**
+     * @var array
+     */
     private array $detailUrls = [];
 
     /**
@@ -84,6 +94,9 @@ class ListResult implements Countable, IteratorAggregate
         return $this->count;
     }
 
+    /**
+     * @param ListItem $item
+     */
     public function addItem(ListItem $item): void
     {
         $this->items[] = $item;
@@ -98,11 +111,17 @@ class ListResult implements Countable, IteratorAggregate
         return $this->items;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getTitleLabels(): array
     {
         return ['Title', 'City', 'State', 'Image'];
     }
 
+    /**
+     * @return array
+     */
     public function asArray(): array
     {
         $array = [];
@@ -112,6 +131,9 @@ class ListResult implements Countable, IteratorAggregate
         return $array;
     }
 
+    /**
+     * @param string $url
+     */
     public function addDetailsUrl(string $url): void
     {
         $this->detailUrls[] = $url;

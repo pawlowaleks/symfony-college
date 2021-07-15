@@ -4,14 +4,25 @@
 namespace App\Engine\College;
 
 
-use App\Engine\ListItem;
-use App\Engine\ListResult;
+use App\Engine\Entity\ListItem;
+use App\Engine\Entity\ListItemInterface;
+use App\Engine\Entity\ListResult;
+use App\Engine\Entity\ListResultInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ListParser
+/**
+ * Class ListParser
+ * @package App\Engine\College
+ */
+class ListParser implements ListParserInterface
 {
 
-    public function parse(string $url, string $content): ?ListResult
+    /**
+     * @param string $url
+     * @param string $content
+     * @return ListResultInterface|null
+     */
+    public function parse(string $url, string $content): ?ListResultInterface
     {
         $crawler = new Crawler($content, $url);
         $colleges = $crawler->filter('#filtersForm > div.col-sm-9.desktop-74p-width')->filter('div.row.vertical-padding');
@@ -38,7 +49,11 @@ class ListParser
         return $listResult;
     }
 
-    private function parseItem(Crawler $element): ?ListItem
+    /**
+     * @param Crawler $element
+     * @return ListItem|null
+     */
+    private function parseItem(Crawler $element): ?ListItemInterface
     {
         $listItem = new ListItem();
 
@@ -48,9 +63,6 @@ class ListParser
             return null;
         }
         $listItem->setTitle($titleDom->text());
-
-//        $detailsUrlDom = $titleDom->link();
-//        $this->detailsUrls[] = $detailsUrlDom->getUri();
 
         $imageDom = $element->filter('div > a > img');
         if ($imageDom->count()) {
@@ -69,18 +81,12 @@ class ListParser
         $listItem->setDetailsUrl($this->findDetailsUrl($element));
 
         return $listItem;
-
-//        if (!empty($array)) {
-//            $this->tableRows[] = $array;
-//            $collegeRepository = $this->entityManager->getRepository(College::class);
-//            $saveResult = $collegeRepository->saveCollege($array['title'], $array['city'], $array['state'], $array['image']);
-//            if (!$saveResult) {
-//                $this->errors[] = 'Save error';
-//                return false;
-//            }
-//        }
     }
 
+    /**
+     * @param Crawler $element
+     * @return string|null
+     */
     private function findDetailsUrl(Crawler $element): ?string
     {
         $titleDom = $element->filter('div > div > div > h2 > a');

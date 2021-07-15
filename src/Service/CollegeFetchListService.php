@@ -6,16 +6,30 @@ namespace App\Service;
 
 use App\Engine\College\ListEngine;
 use App\Engine\College\ListParser;
-use App\Engine\ListResult;
+use App\Engine\Entity\ListResult;
 use App\Entity\College;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpClient\HttpClient;
 
+/**
+ * Class CollegeFetchListService
+ * @package App\Service
+ */
 class CollegeFetchListService
 {
 
     public const URL_START = 'https://www.princetonreview.com/college-search?ceid=cp-1022984';
 
+    /**
+     * @var EntityManagerInterface
+     */
     private $entityManager;
 
     /**
@@ -23,6 +37,10 @@ class CollegeFetchListService
      */
     private ?ListResult $listResult;
 
+    /**
+     * CollegeFetchListService constructor.
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -43,13 +61,14 @@ class CollegeFetchListService
         }
         $this->setListResult($listResult);
 
-        $this->setNextUrl($listResult->getNextUrl());
-
         $this->saveColleges();
 
         return true;
     }
 
+    /**
+     * @return bool
+     */
     private function saveColleges(): bool
     {
         $collegeRepository = $this->entityManager->getRepository(College::class);
@@ -76,11 +95,82 @@ class CollegeFetchListService
     }
 
     /**
-     * @param string|null $nextUrl
+     * Запустить в консоли
+     * @param bool $withDetails
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return bool
      */
-    public function setNextUrl(?string $nextUrl): void
+    public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output): bool
     {
-        $this->nextUrl = $nextUrl;
+        $io = new SymfonyStyle($input, $output);
+
+        $startTime = new DateTimeImmutable();
+        $startTimeString = $startTime->format('Y-m-d H:i:s');
+        $io->text("startTime = {$startTimeString}");
+
+        /** @var string $url Ссылка на страницу со списком колледжей */
+        $url = CollegeFetchListService::URL_START;
+
+        $detailsUrls = [];
+        $pageCount = 1;
+        while (!empty($url)) {
+            $io->info("Page: {$pageCount}\tUrl: {$url}");
+
+            try {
+                $this->fetchCollegesFromPage($url);
+            } catch (Exception $e) {
+                $io->error($e->getMessage());
+                return Command::FAILURE;
+            }
+
+            $listResult = $this->getListResult();
+            if (empty($listResult)) {
+                $pageCount++;
+                $io->warning('Empty listResult');
+                continue;
+            }
+
+            $table = new Table($output);
+            $table
+                ->setHeaderTitle('Colleges')
+                ->setFooterTitle("Page {$pageCount}")
+                ->setHeaders(ListResult::getTitleLabels())
+                ->setRows($listResult->asArray());
+            $table->render();
+
+            $detailsUrls = array_merge($detailsUrls, $listResult->getDetailUrls());
+            $url = $listResult->getNextUrl();
+            $pageCount++;
+        }
+
+        $totalCount = count($detailsUrls);
+        $io->success("Total colleges: {$totalCount}");
+
+        if ($withDetails) {
+            $io->text('Fetch details');
+            $collegeFetchDetailsService = new CollegeFetchDetailsService($this->entityManager);
+            $detailsCount = 1;
+            foreach ($detailsUrls as $detailsUrl) {
+                if (empty($detailsUrl)) {
+                    continue;
+                }
+                $io->text("#{$detailsCount}: {$detailsUrl}");
+
+                $detailsResult = $collegeFetchDetailsService->runInConsole($detailsUrl, $input, $output);
+                if (!$detailsResult) {
+                    continue;
+                }
+                $detailsCount++;
+            }
+        }
+
+        // Удалить устаревшие колледжи, которых не было в полученном списке
+        $repository = $this->entityManager->getRepository(College::class);
+        $deleteResult = $repository->deleteOldColleges($startTimeString);
+        $io->text("Deleted {$deleteResult} old colleges");
+
+        return true;
     }
 
 }

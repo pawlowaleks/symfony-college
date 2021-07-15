@@ -1,10 +1,14 @@
 <?php
 
 
-namespace App\Engine;
+namespace App\Engine\Entity;
 
 
-class DetailsItem extends Item
+/**
+ * Class DetailsItem
+ * @package App\Engine\Entity
+ */
+class DetailsItem extends Item implements DetailsItemInterface
 {
 
     /** @var string|null $address Адрес */
@@ -78,6 +82,9 @@ class DetailsItem extends Item
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getTitleLabels(): array
     {
         return ['Title', 'Address', 'Phone', 'Site'];

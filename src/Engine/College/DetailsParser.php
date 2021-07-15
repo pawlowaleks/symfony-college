@@ -1,12 +1,15 @@
 <?php
 
-
 namespace App\Engine\College;
 
-
-use App\Engine\DetailsItem;
+use App\Engine\Entity\DetailsItem;
+use App\Engine\Entity\DetailsItemInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ * Class DetailsParser
+ * @package App\Engine\College
+ */
 class DetailsParser
 {
     /**
@@ -14,7 +17,7 @@ class DetailsParser
      * @param string $content
      * @return DetailsItem|null
      */
-    public function parse(string $url, string $content): ?DetailsItem
+    public function parse(string $url, string $content): ?DetailsItemInterface
     {
         $crawler = new Crawler($content, $url);
 

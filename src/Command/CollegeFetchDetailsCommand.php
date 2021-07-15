@@ -2,12 +2,9 @@
 
 namespace App\Command;
 
-use App\Engine\DetailsItem;
 use App\Service\CollegeFetchDetailsService;
-use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,26 +38,10 @@ class CollegeFetchDetailsCommand extends Command
 
         $io->success("php bin/console college:fetch-details {$url}");
 
-        try {
-            $this->collegeFetchDetailsService->fetchDetails($url);
-        } catch (Exception $e) {
-            $io->error($e->getMessage());
+        $result = $this->collegeFetchDetailsService->runInConsole($url, $input, $output);
+        if (!$result) {
             return Command::FAILURE;
         }
-
-        $detailsItem = $this->collegeFetchDetailsService->getDetailsItem();
-        if (empty($detailsItem)) {
-            $io->error('Empty detailsItem');
-            return Command::FAILURE;
-        }
-
-        $table = new Table($output);
-        $table
-            ->setHeaderTitle('College')
-            ->setHeaders(DetailsItem::getTitleLabels())
-            ->setRows([$detailsItem->asArray()]);
-        $table->render();
-
         return Command::SUCCESS;
     }
 

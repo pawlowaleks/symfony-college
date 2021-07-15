@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Engine\DetailsItem;
-use App\Engine\ListItem;
+use App\Engine\Entity\DetailsItem;
+use App\Engine\Entity\ListItem;
 use App\Entity\College;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

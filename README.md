@@ -13,6 +13,6 @@ php bin/console college:fetch-list
 
 Get colleges list with more information:
 ```
-php bin/console college:fetch-list  --withDetails
+php bin/console college:fetch-list  --with-details
 ```
 

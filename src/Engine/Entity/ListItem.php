@@ -1,10 +1,14 @@
 <?php
 
 
-namespace App\Engine;
+namespace App\Engine\Entity;
 
 
-class ListItem extends Item
+/**
+ * Class ListItem
+ * @package App\Engine\Entity
+ */
+class ListItem extends Item implements ListItemInterface
 {
 
     /**
@@ -22,6 +26,9 @@ class ListItem extends Item
      */
     private ?string $image;
 
+    /**
+     * @var string|null
+     */
     private ?string $detailsUrl;
 
     /**

@@ -4,10 +4,15 @@
 namespace App\Engine\College;
 
 
-use App\Engine\ListResult;
+use App\Engine\Entity\ListResult;
+use App\Engine\Entity\ListResultInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ListEngine
+/**
+ * Class ListEngine
+ * @package App\Engine\College
+ */
+class ListEngine implements ListEngineInterface
 {
     /**
      * @var ListParser
@@ -34,7 +39,7 @@ class ListEngine
      * @param string $url
      * @return ListResult|null
      */
-    public function load(string $url): ?ListResult
+    public function load(string $url): ?ListResultInterface
     {
         $response = $this->client->request('GET', $url);
         if ($response->getStatusCode() != 200) {
@@ -44,11 +49,6 @@ class ListEngine
         $content = $response->getContent();
 
         return $this->parser->parse($url, $content);
-    }
-
-    private function findNextUrl()
-    {
-
     }
 
 }
