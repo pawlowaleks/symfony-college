@@ -10,6 +10,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class CollegeFetchDetailsCommand
+ * @package App\Command
+ */
 #[AsCommand(
     name: 'college:fetch-details',
     description: 'Сохранить детальную информацию о колледже',
@@ -17,8 +21,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CollegeFetchDetailsCommand extends Command
 {
 
-    private $collegeFetchDetailsService;
+    /**
+     * @var CollegeFetchDetailsService
+     */
+    private CollegeFetchDetailsService $collegeFetchDetailsService;
 
+    /**
+     * CollegeFetchDetailsCommand constructor.
+     * @param CollegeFetchDetailsService $collegeFetchDetailsService
+     */
     public function __construct(CollegeFetchDetailsService $collegeFetchDetailsService)
     {
         $this->collegeFetchDetailsService = $collegeFetchDetailsService;
@@ -31,6 +42,11 @@ class CollegeFetchDetailsCommand extends Command
             ->addArgument('url', InputArgument::REQUIRED, 'Ссылка на страницу о колледже');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

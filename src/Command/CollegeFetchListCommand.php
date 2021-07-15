@@ -13,6 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 
+/**
+ * Class CollegeFetchListCommand
+ * @package App\Command
+ */
 #[AsCommand(
     name: 'college:fetch-list',
     description: 'Сохранить список колледжей',
@@ -20,9 +24,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CollegeFetchListCommand extends Command
 {
 
-    private $entityManager;
-    private $collegeFetchListService;
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $entityManager;
+    /**
+     * @var CollegeFetchListService
+     */
+    private CollegeFetchListService $collegeFetchListService;
 
+    /**
+     * CollegeFetchListCommand constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param CollegeFetchListService $collegeFetchListService
+     * @param CollegeFetchDetailsService $collegeFetchDetailsService
+     */
     public function __construct(EntityManagerInterface $entityManager, CollegeFetchListService $collegeFetchListService, CollegeFetchDetailsService $collegeFetchDetailsService)
     {
         $this->entityManager = $entityManager;
@@ -37,6 +53,11 @@ class CollegeFetchListCommand extends Command
             ->addOption('with-details', null, InputOption::VALUE_NONE, 'Включить сохранение детальной информации');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

@@ -30,7 +30,7 @@ class CollegeFetchDetailsService
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * CollegeFetchDetailsService constructor.
@@ -66,8 +66,7 @@ class CollegeFetchDetailsService
         }
 
         $table = new Table($output);
-        $table
-            ->setHeaderTitle('College')
+        $table->setHeaderTitle('College')
             ->setHeaders(DetailsItem::getTitleLabels())
             ->setRows([$detailsItem->asArray()]);
         $table->render();
