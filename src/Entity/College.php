@@ -5,6 +5,8 @@ namespace App\Entity;
 use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
 use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\CollegeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +58,16 @@ class College implements TimestampableInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $site;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Major::class, inversedBy="colleges")
+     */
+    private $major;
+
+    public function __construct()
+    {
+        $this->major = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -142,6 +154,30 @@ class College implements TimestampableInterface
     public function setSite(?string $site): self
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Major[]
+     */
+    public function getMajor(): Collection
+    {
+        return $this->major;
+    }
+
+    public function addMajor(Major $major): self
+    {
+        if (!$this->major->contains($major)) {
+            $this->major[] = $major;
+        }
+
+        return $this;
+    }
+
+    public function removeMajor(Major $major): self
+    {
+        $this->major->removeElement($major);
 
         return $this;
     }
