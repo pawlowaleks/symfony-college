@@ -53,7 +53,7 @@ class CollegeFetchListService
      * @param OutputInterface $output
      * @return bool
      */
-    public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output): bool
+    public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output, string $startUrl = self::URL_START): bool
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -62,9 +62,10 @@ class CollegeFetchListService
         $io->text("startTime = {$startTimeString}");
 
         /** @var string $url Ссылка на страницу со списком колледжей */
-        $url = CollegeFetchListService::URL_START;
+        $url = $startUrl;
 
         $detailsUrls = [];
+        $detailsUrlsMerged = [];
         $pageCount = 1;
         while (!empty($url)) {
             $io->info("Page: {$pageCount}\tUrl: {$url}");
@@ -90,19 +91,23 @@ class CollegeFetchListService
                 ->setRows($listResult->asArray());
             $table->render();
 
-            $detailsUrls = array_merge($detailsUrls, $listResult->getDetailUrls());
+//            $detailsUrls = array_merge($detailsUrls, $listResult->getDetailUrls());
+            $detailsUrls[] = $listResult->getDetailUrls();
+
             $url = $listResult->getNextUrl();
             $pageCount++;
         }
 
-        $totalCount = count($detailsUrls);
+        $detailsUrlsMerged = array_merge([], ...$detailsUrls);
+
+        $totalCount = count($detailsUrlsMerged);
         $io->success("Total colleges: {$totalCount}");
 
         if ($withDetails) {
             $io->text('Fetch details');
             $collegeFetchDetailsService = new CollegeFetchDetailsService($this->entityManager);
             $detailsCount = 1;
-            foreach ($detailsUrls as $detailsUrl) {
+            foreach ($detailsUrlsMerged as $detailsUrl) {
                 if (empty($detailsUrl)) {
                     continue;
                 }

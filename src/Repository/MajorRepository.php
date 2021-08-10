@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Engine\Entity\MajorCategoryListItem;
 use App\Entity\Major;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -36,15 +37,30 @@ class MajorRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Major
+
+    public function findOneByTitle($value): ?Major
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+            ->andWhere('m.title = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
+
+    public function saveMajorDetails(MajorCategoryListItem $item): bool
+    {
+        $entityManager = $this->getEntityManager();
+
+        $major = $entityManager->getRepository(Major::class)->findOneByTitle($item->getTitle());
+        if (empty($major)) {
+            $major = new Major();
+            $major->setTitle($item->getTitle());
+        }
+
+
+        $entityManager->persist($major);
+        $entityManager->flush();
+        return true;
+    }
+
 }

@@ -17,6 +17,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class CollegeFetchMajorsCommand extends Command
 {
+
+    private CollegeFetchMajorsService $collegeFetchMajorsService;
+
+    public function __construct(CollegeFetchMajorsService $collegeFetchMajorsService)
+    {
+        $this->collegeFetchMajorsService = $collegeFetchMajorsService;
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -39,9 +48,9 @@ class CollegeFetchMajorsCommand extends Command
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
-        $service = new CollegeFetchMajorsService();
+//        $service = new CollegeFetchMajorsService();
 
-        $service->runInConsole($input, $output);
+        $this->collegeFetchMajorsService->runInConsole($input, $output);
 
         return Command::SUCCESS;
     }
