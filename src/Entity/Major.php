@@ -131,7 +131,7 @@ class Major
     {
         if (!$this->majors->contains($major)) {
             $this->majors[] = $major;
-            $major->setParentMajorId($this);
+            $major->setParentMajor($this);
         }
 
         return $this;
@@ -141,8 +141,8 @@ class Major
     {
         if ($this->majors->removeElement($major)) {
             // set the owning side to null (unless already changed)
-            if ($major->getParentMajorId() === $this) {
-                $major->setParentMajorId(null);
+            if ($major->getParentMajor() === $this) {
+                $major->setParentMajor(null);
             }
         }
 
