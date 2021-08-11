@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Engine\Entity\MajorCategoryListItem;
 use App\Entity\Major;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,6 +49,10 @@ class MajorRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param MajorCategoryListItem $item
+     * @return Major|null
+     */
     public function saveMajorDetails(MajorCategoryListItem $item): ?Major
     {
         $parentMajor = null;
@@ -58,6 +64,13 @@ class MajorRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @param MajorCategoryListItem $item
+     * @param Major|null $parentMajor
+     * @return Major|null
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     private function saveMajorItem(MajorCategoryListItem $item, Major $parentMajor = null): ?Major
     {
         $entityManager = $this->getEntityManager();

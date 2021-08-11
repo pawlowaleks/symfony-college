@@ -70,6 +70,8 @@ class CollegeFetchListService
      * @param bool $withDetails
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @param string $startUrl
+     * @param bool $deleteOld
      * @return bool
      */
     public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output, string $startUrl = self::URL_START, bool $deleteOld = true): bool

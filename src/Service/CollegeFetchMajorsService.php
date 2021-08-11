@@ -35,6 +35,7 @@ class CollegeFetchMajorsService
 
     /**
      * CollegeFetchListCommand constructor.
+     * @param EntityManagerInterface $entityManager
      * @param CollegeFetchListService $collegeFetchListService
      */
     public function __construct(EntityManagerInterface $entityManager, CollegeFetchListService $collegeFetchListService)
@@ -44,11 +45,14 @@ class CollegeFetchMajorsService
 //        parent::__construct();
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return bool
+     */
     public function runInConsole(InputInterface $input, OutputInterface $output): bool
     {
         $io = new SymfonyStyle($input, $output);
-
-        $io->info('F');
 
         $majorCategoryEngine = new MajorCategoryEngine(HttpClient::create());
 
@@ -90,14 +94,8 @@ class CollegeFetchMajorsService
 
     private function loadColleges(string $majorDetailsUrl, InputInterface $input, OutputInterface $output, ?Major $major = null)
     {
-        var_dump($majorDetailsUrl);
-
         $majorDetailsEngine = new MajorDetailsEngine(HttpClient::create());
         $majorDetailsItem = $majorDetailsEngine->load($majorDetailsUrl);
-
-        var_dump($majorDetailsItem->getCollegesUrl());
-//
-//        die();
 
         $this->collegeFetchListService->setMajor($major);
         $this->collegeFetchListService->runInConsole(false, $input, $output, $majorDetailsItem->getCollegesUrl(), false);

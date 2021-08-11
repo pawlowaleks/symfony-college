@@ -7,6 +7,7 @@ use App\Engine\Entity\ListItem;
 use App\Entity\College;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -41,7 +42,11 @@ class CollegeRepository extends ServiceEntityRepository
     }
     */
 
-
+    /**
+     * @param $value
+     * @return College|null
+     * @throws NonUniqueResultException
+     */
     public function findOneByTitle($value): ?College
     {
         return $this->createQueryBuilder('c')
