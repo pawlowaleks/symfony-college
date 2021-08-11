@@ -9,6 +9,9 @@ class MajorCategoryListItem
 
     private string $url;
 
+    private ?MajorCategoryListItem $parentMajor;
+
+
     /**
      * @return string
      */
@@ -45,8 +48,25 @@ class MajorCategoryListItem
     {
         return [
             $this->getTitle(),
-            $this->getUrl()
+            $this->getUrl(),
+            empty($this->getParentMajor()) ? null : $this->getParentMajor()->getTitle()
         ];
+    }
+
+    /**
+     * @return MajorCategoryListItem|null
+     */
+    public function getParentMajor(): ?MajorCategoryListItem
+    {
+        return $this->parentMajor;
+    }
+
+    /**
+     * @param MajorCategoryListItem|null $parentMajor
+     */
+    public function setParentMajor(?MajorCategoryListItem $parentMajor): void
+    {
+        $this->parentMajor = $parentMajor;
     }
 
 

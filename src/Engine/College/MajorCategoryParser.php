@@ -13,6 +13,8 @@ class MajorCategoryParser
 
     private MajorCategoryListResult $majorCategoryListResult;
 
+    private ?MajorCategoryListItem $parentMajor;
+
     public function __construct()
     {
         $this->majorCategoryListResult = new MajorCategoryListResult();
@@ -65,7 +67,24 @@ class MajorCategoryParser
         $majorItem = new MajorCategoryListItem();
         $majorItem->setUrl($link->getUri());
         $majorItem->setTitle($link->getNode()->textContent);
+        $majorItem->setParentMajor($this->getParentMajor());
         return $majorItem;
+    }
+
+    /**
+     * @return MajorCategoryListItem|null
+     */
+    public function getParentMajor(): ?MajorCategoryListItem
+    {
+        return $this->parentMajor;
+    }
+
+    /**
+     * @param MajorCategoryListItem|null $parentMajor
+     */
+    public function setParentMajor(?MajorCategoryListItem $parentMajor): void
+    {
+        $this->parentMajor = $parentMajor;
     }
 
 }

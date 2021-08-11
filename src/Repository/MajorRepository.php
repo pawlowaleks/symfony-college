@@ -49,18 +49,32 @@ class MajorRepository extends ServiceEntityRepository
 
     public function saveMajorDetails(MajorCategoryListItem $item): bool
     {
+        $parentMajor = null;
+        if (!empty($item->getParentMajor())) {
+            $parentMajor = $this->saveMajorItem($item->getParentMajor());
+        }
+
+        $this->saveMajorItem($item, $parentMajor);
+
+        return true;
+    }
+
+    private function saveMajorItem(MajorCategoryListItem $item, Major $parentMajor = null): ?Major
+    {
         $entityManager = $this->getEntityManager();
 
-        $major = $entityManager->getRepository(Major::class)->findOneByTitle($item->getTitle());
+        $major = $this->getEntityManager()->getRepository(Major::class)->findOneByTitle($item->getTitle());
         if (empty($major)) {
             $major = new Major();
             $major->setTitle($item->getTitle());
         }
 
+        $major->setParentMajor($parentMajor);
 
         $entityManager->persist($major);
         $entityManager->flush();
-        return true;
+
+        return $major;
     }
 
 }

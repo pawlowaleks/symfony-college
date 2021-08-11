@@ -68,7 +68,7 @@ class CollegeFetchMajorsService
             $majorRepository->saveMajorDetails($majorItem);
 
 
-            $innerResult = $majorCategoryEngine->load($majorItem->getUrl());
+            $innerResult = $majorCategoryEngine->load($majorItem->getUrl(), $majorItem);
             $table = new Table($output);
             $table->setHeaderTitle('Inner Majors')
                 ->setHeaders(['Title', 'Url'])
@@ -93,7 +93,6 @@ class CollegeFetchMajorsService
 
         $majorDetailsEngine = new MajorDetailsEngine(HttpClient::create());
         $majorDetailsItem = $majorDetailsEngine->load($majorDetailsUrl);
-
 
         $this->collegeFetchListService->runInConsole(false, $input, $output, $majorDetailsItem->getCollegesUrl());
     }

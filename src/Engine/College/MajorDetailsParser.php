@@ -20,7 +20,7 @@ class MajorDetailsParser
      * @param string $content
      * @return MajorDetailsItem
      */
-    public function parse(string $url, string $content): MajorDetailsItem
+    public function parse(string $url, string $content, ?MajorDetailsItem $parentMajor = null): MajorDetailsItem
     {
         $crawler = new Crawler($content, $url);
 
@@ -28,6 +28,7 @@ class MajorDetailsParser
         $link = $domLink->link();
 
         $this->majorDetailsItem->setCollegesUrl($link->getUri());
+        $this->majorDetailsItem->setParentMajor($parentMajor);
 
         return $this->majorDetailsItem;
     }

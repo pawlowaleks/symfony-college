@@ -2,6 +2,7 @@
 
 namespace App\Engine\College;
 
+use App\Engine\Entity\MajorCategoryListItem;
 use App\Engine\Entity\MajorCategoryListResult;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -21,7 +22,7 @@ class MajorCategoryEngine
         $this->client = $client;
     }
 
-    public function load(string $url): ?MajorCategoryListResult
+    public function load(string $url, ?MajorCategoryListItem $parentMajor = null): ?MajorCategoryListResult
     {
         $response = $this->client->request('GET', $url);
         if ($response->getStatusCode() != 200) {
@@ -31,6 +32,7 @@ class MajorCategoryEngine
         $content = $response->getContent();
 
         $parser = new MajorCategoryParser();
+        $parser->setParentMajor($parentMajor);
         return $parser->parse($url, $content);
     }
 
