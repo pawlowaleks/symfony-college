@@ -4,6 +4,8 @@
 namespace App\Engine\Entity;
 
 
+use App\Entity\Major;
+
 /**
  * Class ListItem
  * @package App\Engine\Entity
@@ -31,6 +33,24 @@ class ListItem extends Item implements ListItemInterface
      */
     private ?string $detailsUrl;
 
+    private ?Major $major;
+
+    /**
+     * @return Major|null
+     */
+    public function getMajor(): ?Major
+    {
+        return $this->major;
+    }
+
+    /**
+     * @param Major|null $major
+     */
+    public function setMajor(?Major $major): void
+    {
+        $this->major = $major;
+    }
+
     /**
      * @return string|null
      */
@@ -56,6 +76,7 @@ class ListItem extends Item implements ListItemInterface
         $this->state = null;
         $this->image = null;
         $this->detailsUrl = null;
+        $this->major = null;
     }
 
     /**

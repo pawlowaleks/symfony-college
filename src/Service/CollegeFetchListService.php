@@ -8,6 +8,7 @@ use App\Engine\College\ListEngine;
 use App\Engine\College\ListParser;
 use App\Engine\Entity\ListResult;
 use App\Entity\College;
+use App\Entity\Major;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -37,6 +38,24 @@ class CollegeFetchListService
      */
     private ?ListResult $listResult;
 
+    private ?Major $major;
+
+    /**
+     * @return ?Major
+     */
+    public function getMajor(): ?Major
+    {
+        return $this->major;
+    }
+
+    /**
+     * @param ?Major $major
+     */
+    public function setMajor(?Major $major): void
+    {
+        $this->major = $major;
+    }
+
     /**
      * CollegeFetchListService constructor.
      * @param EntityManagerInterface $entityManager
@@ -53,7 +72,7 @@ class CollegeFetchListService
      * @param OutputInterface $output
      * @return bool
      */
-    public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output, string $startUrl = self::URL_START): bool
+    public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output, string $startUrl = self::URL_START, bool $deleteOld = true): bool
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -121,10 +140,12 @@ class CollegeFetchListService
             }
         }
 
-        // Удалить устаревшие колледжи, которых не было в полученном списке
-        $repository = $this->entityManager->getRepository(College::class);
-        $deleteResult = $repository->deleteOldColleges($startTimeString);
-        $io->text("Deleted {$deleteResult} old colleges");
+        if ($deleteOld) {
+            // Удалить устаревшие колледжи, которых не было в полученном списке
+            $repository = $this->entityManager->getRepository(College::class);
+            $deleteResult = $repository->deleteOldColleges($startTimeString);
+            $io->text("Deleted {$deleteResult} old colleges");
+        }
 
         return true;
     }
@@ -138,7 +159,7 @@ class CollegeFetchListService
     {
 
         $listEngine = new ListEngine(new ListParser(), HttpClient::create());
-        $listResult = $listEngine->load($url);
+        $listResult = $listEngine->load($url, $this->getMajor());
         if (empty($listResult)) {
             return false;
         }

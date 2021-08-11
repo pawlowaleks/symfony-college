@@ -47,16 +47,15 @@ class MajorRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function saveMajorDetails(MajorCategoryListItem $item): bool
+    public function saveMajorDetails(MajorCategoryListItem $item): ?Major
     {
         $parentMajor = null;
         if (!empty($item->getParentMajor())) {
             $parentMajor = $this->saveMajorItem($item->getParentMajor());
         }
 
-        $this->saveMajorItem($item, $parentMajor);
+        return $this->saveMajorItem($item, $parentMajor);
 
-        return true;
     }
 
     private function saveMajorItem(MajorCategoryListItem $item, Major $parentMajor = null): ?Major

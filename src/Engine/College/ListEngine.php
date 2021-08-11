@@ -3,6 +3,7 @@
 namespace App\Engine\College;
 
 use App\Engine\Entity\ListResult;
+use App\Entity\Major;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -36,7 +37,7 @@ class ListEngine implements ListEngineInterface
      * @param string $url
      * @return ListResult|null
      */
-    public function load(string $url): ?ListResult
+    public function load(string $url, ?Major $major = null): ?ListResult
     {
         $response = $this->client->request('GET', $url);
         if ($response->getStatusCode() != 200) {
@@ -45,7 +46,7 @@ class ListEngine implements ListEngineInterface
         }
         $content = $response->getContent();
 
-        return $this->parser->parse($url, $content);
+        return $this->parser->parse($url, $content, $major);
     }
 
 }

@@ -79,22 +79,28 @@ class CollegeFetchMajorsService
             foreach ($innerResult->getItems() as $innerMajorItem) {
 
                 $majorRepository = $this->entityManager->getRepository(Major::class);
-                $majorRepository->saveMajorDetails($innerMajorItem);
+                $major = $majorRepository->saveMajorDetails($innerMajorItem);
 
-//                $this->loadColleges($innerMajorItem->getUrl(), $input, $output);
+                $this->loadColleges($innerMajorItem->getUrl(), $input, $output, $major);
             }
         }
 
         return true;
     }
 
-    private function loadColleges(string $majorDetailsUrl, InputInterface $input, OutputInterface $output)
+    private function loadColleges(string $majorDetailsUrl, InputInterface $input, OutputInterface $output, ?Major $major = null)
     {
+        var_dump($majorDetailsUrl);
 
         $majorDetailsEngine = new MajorDetailsEngine(HttpClient::create());
         $majorDetailsItem = $majorDetailsEngine->load($majorDetailsUrl);
 
-        $this->collegeFetchListService->runInConsole(false, $input, $output, $majorDetailsItem->getCollegesUrl());
+        var_dump($majorDetailsItem->getCollegesUrl());
+//
+//        die();
+
+        $this->collegeFetchListService->setMajor($major);
+        $this->collegeFetchListService->runInConsole(false, $input, $output, $majorDetailsItem->getCollegesUrl(), false);
     }
 
 

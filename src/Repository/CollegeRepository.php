@@ -73,6 +73,8 @@ class CollegeRepository extends ServiceEntityRepository
         $college->setImage($item->getImage());
         $college->setUpdatedAt(new DateTimeImmutable());
 
+        $college->addMajor($item->getMajor());
+
         $entityManager->persist($college);
         $entityManager->flush();
         return true;
