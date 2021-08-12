@@ -2,7 +2,7 @@
 
 namespace App\Engine\Entity;
 
-class MajorDetailsItem
+class MajorDetailsItem extends AbstractEntity
 {
 
     private string $collegesUrl;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Engine\College;
+namespace App\Engine\Parser;
 
-use App\Engine\Entity\ListItem;
-use App\Engine\Entity\ListResult;
+use App\Engine\Entity\CollegeListItem;
+use App\Engine\Entity\CollegeListResult;
 use App\Entity\Major;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -11,22 +11,22 @@ use Symfony\Component\DomCrawler\Crawler;
  * Class ListParser
  * @package App\Engine\College
  */
-class ListParser implements ListParserInterface
+class CollegeListParser implements ParserInterface
 {
 
     /**
      * @param string $url
      * @param string $content
-     * @return ListResult|null
+     * @return CollegeListResult|null
      */
-    public function parse(string $url, string $content, ?Major $major = null): ?ListResult
+    public function parse(string $url, string $content, ?Major $major = null): ?CollegeListResult
     {
         $crawler = new Crawler($content, $url);
         $colleges = $crawler->filter('#filtersForm > div.col-sm-9.desktop-74p-width')->filter('div.row.vertical-padding');
 
         $this->tableRows = [];
 
-        $listResult = new ListResult(0, []);
+        $listResult = new CollegeListResult(0, []);
 
         foreach ($colleges as $collegeSelector) {
             $element = new Crawler($collegeSelector, $url);
@@ -49,11 +49,11 @@ class ListParser implements ListParserInterface
 
     /**
      * @param Crawler $element
-     * @return ListItem|null
+     * @return CollegeListItem|null
      */
-    private function parseItem(Crawler $element): ?ListItem
+    private function parseItem(Crawler $element): ?CollegeListItem
     {
-        $listItem = new ListItem();
+        $listItem = new CollegeListItem();
 
         $titleDom = $element->filter('div > div > div > h2 > a');
         if (!$titleDom->count()) {

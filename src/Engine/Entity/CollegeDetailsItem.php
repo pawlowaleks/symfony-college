@@ -8,7 +8,7 @@ namespace App\Engine\Entity;
  * Class DetailsItem
  * @package App\Engine\Entity
  */
-class DetailsItem extends Item implements DetailsItemInterface
+class CollegeDetailsItem extends CollegeItem
 {
 
     /** @var string|null $address Адрес */

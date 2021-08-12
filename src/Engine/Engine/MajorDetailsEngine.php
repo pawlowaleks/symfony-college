@@ -1,26 +1,12 @@
 <?php
 
-namespace App\Engine\College;
+namespace App\Engine\Engine;
 
 use App\Engine\Entity\MajorDetailsItem;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Engine\Parser\MajorDetailsParser;
 
-class MajorDetailsEngine
+class MajorDetailsEngine extends AbstractEngine
 {
-
-    /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $client;
-
-    /**
-     * DetailsEngine constructor.
-     * @param HttpClientInterface $client
-     */
-    public function __construct(HttpClientInterface $client)
-    {
-        $this->client = $client;
-    }
 
     public function load(string $url): ?MajorDetailsItem
     {

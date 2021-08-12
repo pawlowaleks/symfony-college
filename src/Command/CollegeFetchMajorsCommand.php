@@ -50,7 +50,8 @@ class CollegeFetchMajorsCommand extends Command
 
 //        $service = new CollegeFetchMajorsService();
 
-        $this->collegeFetchMajorsService->runInConsole($input, $output);
+        $this->collegeFetchMajorsService->setInputOutput($input, $output, $io);
+        $this->collegeFetchMajorsService->runInConsole();
 
         return Command::SUCCESS;
     }

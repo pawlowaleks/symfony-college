@@ -6,51 +6,49 @@ namespace App\Service;
 
 use App\Engine\College\DetailsEngine;
 use App\Engine\College\DetailsParser;
-use App\Engine\Entity\DetailsItem;
+use App\Engine\Engine\CollegeDetailsEngine;
+use App\Engine\Entity\CollegeDetailsItem;
 use App\Entity\College;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpClient\HttpClient;
 
 /**
  * Class CollegeFetchDetailsService
  * @package App\Service
  */
-class CollegeFetchDetailsService
+class CollegeFetchDetailsService extends AbstractService
 {
     /**
-     * @var DetailsItem|null
+     * @var CollegeDetailsItem|null
      */
-    private ?DetailsItem $detailsItem;
+    private ?CollegeDetailsItem $detailsItem;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * CollegeFetchDetailsService constructor.
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+//    /**
+//     * @var EntityManagerInterface
+//     */
+//    private EntityManagerInterface $entityManager;
+//
+//    /**
+//     * CollegeFetchDetailsService constructor.
+//     * @param EntityManagerInterface $entityManager
+//     */
+//    public function __construct(EntityManagerInterface $entityManager)
+//    {
+//        $this->entityManager = $entityManager;
+//    }
 
     /**
      * Запустить в консоли
-     * @param string $url
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param string|null $url
      * @return bool
      */
-    public function runInConsole(string $url, InputInterface $input, OutputInterface $output): bool
+    public function runInConsole(string $url = null): bool
     {
-        $io = new SymfonyStyle($input, $output);
+        if (empty($url)) {
+            return false;
+        }
+
+        $io = $this->io;
 
         try {
             $this->fetchDetails($url);
@@ -65,9 +63,9 @@ class CollegeFetchDetailsService
             return false;
         }
 
-        $table = new Table($output);
+        $table = new Table($this->output);
         $table->setHeaderTitle('College')
-            ->setHeaders(DetailsItem::getTitleLabels())
+            ->setHeaders(CollegeDetailsItem::getTitleLabels())
             ->setRows([$detailsItem->asArray()]);
         $table->render();
         return true;
@@ -79,7 +77,7 @@ class CollegeFetchDetailsService
      */
     public function fetchDetails(string $url): bool
     {
-        $detailsEngine = new DetailsEngine(new DetailsParser(), HttpClient::create());
+        $detailsEngine = new CollegeDetailsEngine();
         $detailsItem = $detailsEngine->load($url);
         $this->setDetailsItem($detailsItem);
 
@@ -99,17 +97,17 @@ class CollegeFetchDetailsService
     }
 
     /**
-     * @return DetailsItem|null
+     * @return CollegeDetailsItem|null
      */
-    public function getDetailsItem(): ?DetailsItem
+    public function getDetailsItem(): ?CollegeDetailsItem
     {
         return $this->detailsItem;
     }
 
     /**
-     * @param DetailsItem|null $detailsItem
+     * @param CollegeDetailsItem|null $detailsItem
      */
-    public function setDetailsItem(?DetailsItem $detailsItem): void
+    public function setDetailsItem(?CollegeDetailsItem $detailsItem): void
     {
         $this->detailsItem = $detailsItem;
     }

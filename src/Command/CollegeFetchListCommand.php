@@ -67,7 +67,8 @@ class CollegeFetchListCommand extends Command
         }
         $io->success('php bin/console college:fetch-list');
 
-        $result = $this->collegeFetchListService->runInConsole($withDetails, $input, $output);
+        $this->collegeFetchListService->setInputOutput($input, $output, $io);
+        $result = $this->collegeFetchListService->runInConsole($withDetails, CollegeFetchListService::URL_START, true);
         if (!$result) {
             return Command::FAILURE;
         }

@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Engine\College;
+namespace App\Engine\Parser;
 
-use App\Engine\Entity\DetailsItem;
+use App\Engine\Entity\CollegeDetailsItem;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class DetailsParser
  * @package App\Engine\College
  */
-class DetailsParser implements DetailsParserInterface
+class CollegeDetailsParser implements ParserInterface
 {
     /**
      * @param string $url
      * @param string $content
-     * @return DetailsItem|null
+     * @return CollegeDetailsItem|null
      */
-    public function parse(string $url, string $content): ?DetailsItem
+    public function parse(string $url, string $content): ?CollegeDetailsItem
     {
         $crawler = new Crawler($content, $url);
 
@@ -29,7 +29,7 @@ class DetailsParser implements DetailsParserInterface
             }
         }
 
-        $detailsItem = new DetailsItem();
+        $detailsItem = new CollegeDetailsItem();
 
         $titleDom = $headerDom->filter('h1 > span');
         if ($titleDom->count()) {

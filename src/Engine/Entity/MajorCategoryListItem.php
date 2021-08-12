@@ -2,7 +2,7 @@
 
 namespace App\Engine\Entity;
 
-class MajorCategoryListItem
+class MajorCategoryListItem extends AbstractEntity
 {
 
     private string $title;

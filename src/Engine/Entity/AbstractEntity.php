@@ -2,7 +2,7 @@
 
 namespace App\Engine\Entity;
 
-class AbstractEntity implements EntityInterface
+abstract class AbstractEntity
 {
 
     public function toArray(): array

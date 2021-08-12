@@ -2,7 +2,7 @@
 
 namespace App\Engine\Entity;
 
-class MajorCategoryListResult
+class MajorCategoryListResult extends AbstractEntity
 {
 
     private array $items = [];

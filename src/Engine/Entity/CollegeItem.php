@@ -8,7 +8,7 @@ namespace App\Engine\Entity;
  * Class Item
  * @package App\Engine\Entity
  */
-class Item implements ItemInterface
+class CollegeItem extends AbstractEntity
 {
 
 

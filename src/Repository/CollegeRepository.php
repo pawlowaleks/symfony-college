@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Engine\Entity\DetailsItem;
-use App\Engine\Entity\ListItem;
+use App\Engine\Entity\CollegeDetailsItem;
+use App\Engine\Entity\CollegeListItem;
 use App\Entity\College;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -58,12 +58,12 @@ class CollegeRepository extends ServiceEntityRepository
 
     /**
      * Сохранить Колледж
-     * @param ListItem $item
+     * @param CollegeListItem $item
      * @return bool
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function saveCollege(ListItem $item): bool
+    public function saveCollege(CollegeListItem $item): bool
     {
         $entityManager = $this->getEntityManager();
 
@@ -87,12 +87,12 @@ class CollegeRepository extends ServiceEntityRepository
 
     /**
      * Сохранить детали Колледжа
-     * @param DetailsItem $item
+     * @param CollegeDetailsItem $item
      * @return bool
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function saveCollegeDetails(DetailsItem $item): bool
+    public function saveCollegeDetails(CollegeDetailsItem $item): bool
     {
         $entityManager = $this->getEntityManager();
 

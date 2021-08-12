@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Engine\College;
+namespace App\Engine\Parser;
 
 use App\Engine\Entity\MajorDetailsItem;
 use Symfony\Component\DomCrawler\Crawler;
 
-class MajorDetailsParser
+class MajorDetailsParser implements ParserInterface
 {
 
     private MajorDetailsItem $majorDetailsItem;
@@ -18,6 +18,7 @@ class MajorDetailsParser
     /**
      * @param string $url
      * @param string $content
+     * @param MajorDetailsItem|null $parentMajor
      * @return MajorDetailsItem
      */
     public function parse(string $url, string $content, ?MajorDetailsItem $parentMajor = null): ?MajorDetailsItem

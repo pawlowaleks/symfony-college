@@ -2,9 +2,15 @@
 
 namespace App\Engine\Engine;
 
+use App\Engine\Entity\AbstractEntity;
+
 interface EngineInterface
 {
 
-    public function load(string $url): AbstractEntity;
+    /**
+     * @param string $url
+     * @return AbstractEntity|null
+     */
+    public function load(string $url): ?AbstractEntity;
 
 }

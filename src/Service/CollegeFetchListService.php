@@ -6,39 +6,32 @@ namespace App\Service;
 
 use App\Engine\College\ListEngine;
 use App\Engine\College\ListParser;
-use App\Engine\Entity\ListResult;
+use App\Engine\Engine\CollegeListEngine;
+use App\Engine\Entity\CollegeListResult;
 use App\Entity\College;
 use App\Entity\Major;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpClient\HttpClient;
 
 /**
  * Class CollegeFetchListService
  * @package App\Service
  */
-class CollegeFetchListService
+class CollegeFetchListService extends AbstractService
 {
 
     public const URL_START = 'https://www.princetonreview.com/college-search?ceid=cp-1022984';
 
     /**
-     * @var EntityManagerInterface
+     * @var CollegeListResult|null
      */
-    private EntityManagerInterface $entityManager;
+    private ?CollegeListResult $listResult;
 
-    /**
-     * @var ListResult|null
-     */
-    private ?ListResult $listResult;
-
-    private ?Major $major;
+    private ?Major $major = null;
 
     /**
      * @return ?Major
@@ -57,15 +50,6 @@ class CollegeFetchListService
     }
 
     /**
-     * CollegeFetchListService constructor.
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
      * Запустить в консоли
      * @param bool $withDetails
      * @param InputInterface $input
@@ -74,9 +58,9 @@ class CollegeFetchListService
      * @param bool $deleteOld
      * @return bool
      */
-    public function runInConsole(bool $withDetails, InputInterface $input, OutputInterface $output, string $startUrl = self::URL_START, bool $deleteOld = true): bool
+    public function runInConsole(bool $withDetails = false, string $startUrl = self::URL_START, bool $deleteOld = true): bool
     {
-        $io = new SymfonyStyle($input, $output);
+        $io = $this->io;
 
         $startTime = new DateTimeImmutable();
         $startTimeString = $startTime->format('Y-m-d H:i:s');
@@ -105,10 +89,10 @@ class CollegeFetchListService
                 continue;
             }
 
-            $table = new Table($output);
+            $table = new Table($this->output);
             $table->setHeaderTitle('Colleges')
                 ->setFooterTitle("Page {$pageCount}")
-                ->setHeaders(ListResult::getTitleLabels())
+                ->setHeaders(CollegeListResult::getTitleLabels())
                 ->setRows($listResult->asArray());
             $table->render();
 
@@ -134,7 +118,7 @@ class CollegeFetchListService
                 }
                 $io->text("#{$detailsCount}: {$detailsUrl}");
 
-                $detailsResult = $collegeFetchDetailsService->runInConsole($detailsUrl, $input, $output);
+                $detailsResult = $collegeFetchDetailsService->runInConsole($detailsUrl, $this->input, $this->output);
                 if (!$detailsResult) {
                     continue;
                 }
@@ -160,7 +144,7 @@ class CollegeFetchListService
     public function fetchCollegesFromPage(string $url): bool
     {
 
-        $listEngine = new ListEngine(new ListParser(), HttpClient::create());
+        $listEngine = new CollegeListEngine();
         $listResult = $listEngine->load($url, $this->getMajor());
         if (empty($listResult)) {
             return false;
@@ -185,17 +169,17 @@ class CollegeFetchListService
     }
 
     /**
-     * @return ListResult|null
+     * @return CollegeListResult|null
      */
-    public function getListResult(): ?ListResult
+    public function getListResult(): ?CollegeListResult
     {
         return $this->listResult;
     }
 
     /**
-     * @param ListResult|null $listResult
+     * @param CollegeListResult|null $listResult
      */
-    public function setListResult(?ListResult $listResult): void
+    public function setListResult(?CollegeListResult $listResult): void
     {
         $this->listResult = $listResult;
     }

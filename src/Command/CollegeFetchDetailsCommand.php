@@ -53,6 +53,7 @@ class CollegeFetchDetailsCommand extends Command
 
         $io->success("php bin/console college:fetch-details {$url}");
 
+        $this->collegeFetchDetailsService->setInputOutput($input, $output, $io);
         $result = $this->collegeFetchDetailsService->runInConsole($url, $input, $output);
         if (!$result) {
             return Command::FAILURE;

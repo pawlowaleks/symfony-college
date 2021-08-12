@@ -10,7 +10,7 @@ use App\Entity\Major;
  * Class ListItem
  * @package App\Engine\Entity
  */
-class ListItem extends Item implements ListItemInterface
+class CollegeListItem extends CollegeItem
 {
 
     /**

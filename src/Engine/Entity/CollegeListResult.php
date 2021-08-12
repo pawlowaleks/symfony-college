@@ -3,15 +3,13 @@
 namespace App\Engine\Entity;
 
 use ArrayIterator;
-use Countable;
-use IteratorAggregate;
 use Traversable;
 
 /**
  * Class ListResult
  * @package App\Engine\Entity
  */
-class ListResult implements Countable, IteratorAggregate, ListResultInterface
+class CollegeListResult extends AbstractEntity
 {
     /**
      * @var int $count
@@ -68,7 +66,7 @@ class ListResult implements Countable, IteratorAggregate, ListResultInterface
     /**
      * ListResult constructor.
      * @param int $count
-     * @param Item|array $items
+     * @param CollegeItem|array $items
      */
     public function __construct(int $count, array $items)
     {
@@ -95,9 +93,9 @@ class ListResult implements Countable, IteratorAggregate, ListResultInterface
     }
 
     /**
-     * @param ListItem $item
+     * @param CollegeListItem $item
      */
-    public function addItem(ListItem $item): void
+    public function addItem(CollegeListItem $item): void
     {
         $this->items[] = $item;
 //        $this->count = count($this->items);

@@ -1,26 +1,13 @@
 <?php
 
-namespace App\Engine\College;
+namespace App\Engine\Engine;
 
+use App\Engine\College\MajorCategoryParser;
 use App\Engine\Entity\MajorCategoryListItem;
 use App\Engine\Entity\MajorCategoryListResult;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class MajorCategoryEngine
+class MajorCategoryEngine extends AbstractEngine
 {
-    /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $client;
-
-    /**
-     * DetailsEngine constructor.
-     * @param HttpClientInterface $client
-     */
-    public function __construct(HttpClientInterface $client)
-    {
-        $this->client = $client;
-    }
 
     public function load(string $url, ?MajorCategoryListItem $parentMajor = null): ?MajorCategoryListResult
     {
