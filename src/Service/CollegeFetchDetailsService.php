@@ -23,20 +23,6 @@ class CollegeFetchDetailsService extends AbstractService
      */
     private ?CollegeDetailsItem $detailsItem;
 
-//    /**
-//     * @var EntityManagerInterface
-//     */
-//    private EntityManagerInterface $entityManager;
-//
-//    /**
-//     * CollegeFetchDetailsService constructor.
-//     * @param EntityManagerInterface $entityManager
-//     */
-//    public function __construct(EntityManagerInterface $entityManager)
-//    {
-//        $this->entityManager = $entityManager;
-//    }
-
     /**
      * Запустить в консоли
      * @param string|null $url

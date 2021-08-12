@@ -5,6 +5,10 @@ namespace App\Engine\Engine;
 use App\Engine\Entity\CollegeListResult;
 use App\Engine\Parser\CollegeListParser;
 use App\Entity\Major;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Class ListEngine
@@ -15,7 +19,12 @@ class CollegeListEngine extends AbstractEngine
 
     /**
      * @param string $url
+     * @param Major|null $major
      * @return CollegeListResult|null
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function load(string $url, ?Major $major = null): ?CollegeListResult
     {

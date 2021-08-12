@@ -8,8 +8,6 @@ use App\Engine\Entity\MajorCategoryListItem;
 use App\Entity\Major;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
 /**
@@ -21,16 +19,10 @@ class CollegeFetchMajorsService extends AbstractService
 
     public const URL_START = 'https://www.princetonreview.com/majors?ceid=nav-1-es';
 
-//    /**
-//     * @var EntityManagerInterface
-//     */
-//    private EntityManagerInterface $entityManager;
-
     /**
      * @var CollegeFetchListService
      */
     private CollegeFetchListService $collegeFetchListService;
-
 
     /**
      * CollegeFetchListCommand constructor.
@@ -46,8 +38,6 @@ class CollegeFetchMajorsService extends AbstractService
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return bool
      */
     public function runInConsole(): bool
@@ -57,7 +47,9 @@ class CollegeFetchMajorsService extends AbstractService
         $majorCategoryEngine = new MajorCategoryEngine(HttpClient::create());
 
         $result = $majorCategoryEngine->load(self::URL_START);
-
+        if (empty($result)) {
+            return false;
+        }
 
         $table = new Table($this->output);
         $table->setHeaderTitle('Majors')

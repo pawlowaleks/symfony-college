@@ -2,24 +2,25 @@
 
 namespace App\Service;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Engine\Engine\SubjectListEngine;
+use Symfony\Component\Console\Helper\Table;
 
-class SubjectService
+class SubjectService extends AbstractService
 {
+    const START_URL = 'https://www.classcentral.com/subjects';
 
-    public function runInConsole(InputInterface $input, OutputInterface $output): bool
+    public function runInConsole(): bool
     {
-        $io = new SymfonyStyle($input, $output);
+        $subjectEngine = new SubjectListEngine();
 
-//        $subjectEngine = new SubjectListEngine();
+        $subjectResult = $subjectEngine->load(self::START_URL);
 
-        return true;
-    }
-
-    public function load(): bool
-    {
+        $table = new Table($this->output);
+        $table->setHeaderTitle('Colleges')
+//            ->setFooterTitle("Page {$pageCount}")
+            ->setHeaders(['Title', 'Url', 'Parent Subject'])
+            ->setRows($subjectResult->toArray());
+        $table->render();
 
         return true;
     }

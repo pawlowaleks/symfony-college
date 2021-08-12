@@ -51,8 +51,6 @@ class CollegeDetailsParser implements ParserInterface
             $detailsItem->setSite($siteDom->attr('href'));
         }
 
-//        $det
-
         return $detailsItem;
     }
 

@@ -14,8 +14,6 @@ use DateTimeImmutable;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class CollegeFetchListService
@@ -52,8 +50,6 @@ class CollegeFetchListService extends AbstractService
     /**
      * Запустить в консоли
      * @param bool $withDetails
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @param string $startUrl
      * @param bool $deleteOld
      * @return bool

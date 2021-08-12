@@ -30,21 +30,19 @@ class MajorCategoryParser implements ParserInterface
     {
         $crawler = new Crawler($content, $url);
 
-//        $domCategories = $crawler->filter('#tpr-majors > form > div.container > div.row.columned-list > div > div:nth-child(2) > a');
-
-        // #tpr-majors > form > div.container > div.row.columned-list > div > div:nth-child(2) > a:nth-child(1)
-
         $domColumns = $crawler->filter('#tpr-majors > form > div.container > div.row.columned-list > div > div');
         foreach ($domColumns as $domColumn) {
             $this->parseColumn($domColumn, $url);
         }
 
-//        return $majorListResult;
-
-
         return $this->majorCategoryListResult;
     }
 
+    /**
+     * @param DOMElement $element
+     * @param string $url
+     * @return bool
+     */
     private function parseColumn(DOMElement $element, string $url): bool
     {
         $crawler = new Crawler($element, $url);

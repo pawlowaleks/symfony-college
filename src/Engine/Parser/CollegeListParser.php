@@ -17,6 +17,7 @@ class CollegeListParser implements ParserInterface
     /**
      * @param string $url
      * @param string $content
+     * @param Major|null $major
      * @return CollegeListResult|null
      */
     public function parse(string $url, string $content, ?Major $major = null): ?CollegeListResult
