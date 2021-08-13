@@ -26,12 +26,12 @@ class Course
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $overview;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $url;
 
@@ -80,9 +80,15 @@ class Course
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Subject::class, mappedBy="courses")
+     */
+    private $subjects;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -244,6 +250,33 @@ class Course
     {
         if ($this->tags->removeElement($tag)) {
             $tag->removeCourse($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Subject[]
+     */
+    public function getSubjects(): Collection
+    {
+        return $this->subjects;
+    }
+
+    public function addSubject(Subject $subject): self
+    {
+        if (!$this->subjects->contains($subject)) {
+            $this->subjects[] = $subject;
+            $subject->addCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubject(Subject $subject): self
+    {
+        if ($this->subjects->removeElement($subject)) {
+            $subject->removeCourse($this);
         }
 
         return $this;

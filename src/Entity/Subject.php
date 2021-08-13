@@ -35,9 +35,15 @@ class Subject
      */
     private $subjects;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Course::class, inversedBy="subjects")
+     */
+    private $courses;
+
     public function __construct()
     {
         $this->subjects = new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +101,30 @@ class Subject
     public function setParentSubject(?self $parentSubject): self
     {
         $this->parentSubject = $parentSubject;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Course[]
+     */
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+
+    public function addCourse(Course $course): self
+    {
+        if (!$this->courses->contains($course)) {
+            $this->courses[] = $course;
+        }
+
+        return $this;
+    }
+
+    public function removeCourse(Course $course): self
+    {
+        $this->courses->removeElement($course);
 
         return $this;
     }
