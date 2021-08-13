@@ -3,6 +3,7 @@
 namespace App\Engine\Engine;
 
 use App\Engine\Entity\AbstractEntity;
+use App\Engine\Entity\SubjectResult;
 use App\Engine\Parser\SubjectListParser;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -20,7 +21,7 @@ class SubjectListEngine extends AbstractEngine
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function load(string $url): ?AbstractEntity
+    public function load(string $url): ?SubjectResult
     {
         $response = $this->client->request('GET', $url);
         if ($response->getStatusCode() != 200) {

@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\Engine\Entity\SubjectItem;
 use App\Entity\Subject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +41,11 @@ class SubjectRepository extends ServiceEntityRepository
     */
 
 
+    /**
+     * @param $value
+     * @return Subject|null
+     * @throws NonUniqueResultException
+     */
     public function findOneByTitle($value): ?Subject
     {
         return $this->createQueryBuilder('s')
@@ -44,6 +53,44 @@ class SubjectRepository extends ServiceEntityRepository
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param SubjectItem $item
+     * @return Subject|null
+     */
+    public function saveSubjectItem(SubjectItem $item): ?Subject
+    {
+        $parentSubject = null;
+        if (!empty($item->getParentSubjectItem())) {
+            $parentSubject = $this->saveSubject($item->getParentSubjectItem());
+        }
+
+        return $this->saveSubject($item, $parentSubject);
+    }
+
+    /**
+     * @param SubjectItem $subjectItem
+     * @param Subject|null $parentSubject
+     * @return Subject|null
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function saveSubject(SubjectItem $subjectItem, Subject $parentSubject = null): ?Subject
+    {
+        $entityManager = $this->getEntityManager();
+        $subject = $entityManager->getRepository(Subject::class)->findOneByTitle($subjectItem->getTitle());
+        if (empty($subject)) {
+            $subject = new Subject();
+            $subject->setTitle($subjectItem->getTitle());
+        }
+
+        $subject->setParentSubject($parentSubject);
+
+        $entityManager->persist($subject);
+        $entityManager->flush();
+
+        return $subject;
     }
 
 }
