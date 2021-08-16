@@ -37,7 +37,7 @@ class CollegeItem extends AbstractEntity
     /**
      * @return array
      */
-    public function asArray(): array
+    public function toArray(): array
     {
         return [
             $this->getTitle()

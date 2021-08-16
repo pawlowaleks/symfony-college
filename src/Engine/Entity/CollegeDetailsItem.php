@@ -72,7 +72,7 @@ class CollegeDetailsItem extends CollegeItem
      *
      * @return array
      */
-    public function asArray(): array
+    public function toArray(): array
     {
         return [
             $this->getTitle(),

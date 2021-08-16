@@ -52,7 +52,7 @@ class CollegeFetchDetailsService extends AbstractService
         $table = new Table($this->output);
         $table->setHeaderTitle('College')
             ->setHeaders(CollegeDetailsItem::getTitleLabels())
-            ->setRows([$detailsItem->asArray()]);
+            ->setRows([$detailsItem->toArray()]);
         $table->render();
         return true;
     }

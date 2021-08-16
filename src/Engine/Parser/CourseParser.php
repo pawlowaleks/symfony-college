@@ -14,18 +14,11 @@ class CourseParser implements ParserInterface
     public function parse(string $url, string $content, SubjectItem $subjectItem = null): ?CourseResult
     {
         $crawler = new Crawler($content, $url);
-
         $courseListDom = $crawler->filter('#course-listing-tbody > tr.border-gray-light');
-
-        // row nowrap padding-vert-small vert-align-middle border-bottom border-gray-light
-        // row nowrap vert-align-middle bg-blue-xlight
-
         $courseResult = new CourseResult();
 
         foreach ($courseListDom as $courseDom) {
             $courseItem = $this->parseCourse($courseDom, $url, $subjectItem);
-//            $courseItem->setSubjectItem($subjectItem);
-
             $courseResult->addCourseItem($courseItem);
         }
 

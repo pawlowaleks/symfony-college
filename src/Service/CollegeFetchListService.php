@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Engine\College\ListEngine;
 use App\Engine\College\ListParser;
 use App\Engine\Engine\CollegeListEngine;
+use App\Engine\Entity\CollegeListItem;
 use App\Engine\Entity\CollegeListResult;
 use App\Entity\College;
 use App\Entity\Major;
@@ -89,7 +90,7 @@ class CollegeFetchListService extends AbstractService
             $table->setHeaderTitle('Colleges')
                 ->setFooterTitle("Page {$pageCount}")
                 ->setHeaders(CollegeListResult::getTitleLabels())
-                ->setRows($listResult->asArray());
+                ->setRows($listResult->toArray());
             $table->render();
 
 //            $detailsUrls = array_merge($detailsUrls, $listResult->getDetailUrls());
@@ -97,6 +98,9 @@ class CollegeFetchListService extends AbstractService
 
             $url = $listResult->getNextUrl();
             $pageCount++;
+
+            $this->io->warning('Stop 2');
+            break;
         }
 
         $detailsUrlsMerged = array_merge([], ...$detailsUrls);
@@ -157,8 +161,14 @@ class CollegeFetchListService extends AbstractService
      */
     private function saveColleges(): bool
     {
+        if (empty($this->getListResult())) {
+            return false;
+        }
+
         $collegeRepository = $this->entityManager->getRepository(College::class);
-        foreach ($this->getListResult() as $listItem) {
+
+        /** @var CollegeListItem $listItem */
+        foreach ($this->getListResult()->getItems() as $listItem) {
             $collegeRepository->saveCollege($listItem);
         }
         return true;

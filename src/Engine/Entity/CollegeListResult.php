@@ -17,7 +17,7 @@ class CollegeListResult extends AbstractEntity
     private int $count;
 
     /**
-     * @var array $items
+     * @var CollegeListItem[] $items
      */
     private array $items = [];
 
@@ -120,11 +120,11 @@ class CollegeListResult extends AbstractEntity
     /**
      * @return array
      */
-    public function asArray(): array
+    public function toArray(): array
     {
         $array = [];
         foreach ($this->getItems() as $item) {
-            $array[] = $item->asArray();
+            $array[] = $item->toArray();
         }
         return $array;
     }

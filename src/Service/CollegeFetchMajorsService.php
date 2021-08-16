@@ -79,6 +79,9 @@ class CollegeFetchMajorsService extends AbstractService
 
                 $this->loadColleges($innerMajorItem->getUrl(), $major);
             }
+
+            $this->io->warning('Stop 1');
+            break;
         }
 
         return true;
@@ -91,6 +94,7 @@ class CollegeFetchMajorsService extends AbstractService
 
         $this->collegeFetchListService->setInputOutput($this->input, $this->output, $this->io);
         $this->collegeFetchListService->setMajor($major);
+
         $this->collegeFetchListService->runInConsole(false, $majorDetailsItem->getCollegesUrl(), false);
     }
 

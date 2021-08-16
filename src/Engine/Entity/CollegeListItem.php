@@ -131,13 +131,14 @@ class CollegeListItem extends CollegeItem
      *
      * @return array
      */
-    public function asArray(): array
+    public function toArray(): array
     {
         return [
             $this->getTitle(),
             $this->getCity(),
             $this->getState(),
-            $this->getImage()
+            $this->getImage(),
+            empty($this->getMajor()) ? null : $this->getMajor()->getTitle()
         ];
     }
 
