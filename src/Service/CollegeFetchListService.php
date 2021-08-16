@@ -98,9 +98,6 @@ class CollegeFetchListService extends AbstractService
 
             $url = $listResult->getNextUrl();
             $pageCount++;
-
-            $this->io->warning('Stop 2');
-            break;
         }
 
         $detailsUrlsMerged = array_merge([], ...$detailsUrls);

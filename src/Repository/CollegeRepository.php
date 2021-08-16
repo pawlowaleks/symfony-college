@@ -106,6 +106,8 @@ class CollegeRepository extends ServiceEntityRepository
         $college->setAddress($item->getAddress());
         $college->setPhone($item->getPhone());
         $college->setSite($item->getSite());
+        $college->setEmail($item->getEmail());
+
         $college->setUpdatedAt(new DateTimeImmutable());
 
         $entityManager->persist($college);

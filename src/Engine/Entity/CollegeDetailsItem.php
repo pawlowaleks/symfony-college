@@ -20,6 +20,45 @@ class CollegeDetailsItem extends CollegeItem
     /** @var string|null $site Url сайта колледжа */
     private ?string $site;
 
+    /** @var string|null $email */
+    private ?string $email;
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getContact(): ?string
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param string|null $contact
+     */
+    public function setContact(?string $contact): void
+    {
+        $this->contact = $contact;
+    }
+
+    /** @var string|null $contact */
+    private ?string $contact;
+
+
     /**
      * @return string|null
      */

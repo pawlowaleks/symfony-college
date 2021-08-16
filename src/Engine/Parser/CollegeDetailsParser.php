@@ -44,7 +44,10 @@ class CollegeDetailsParser implements ParserInterface
             $detailsItem->setAddress($addressDom->text());
         }
 
-        $detailsItem->setPhone(self::findPhone($crawler));
+        $visitsContact = self::findCampusVisitsContact($crawler);
+        $detailsItem->setPhone($visitsContact['phone'] ?? null);
+        $detailsItem->setContact($visitsContact['contact'] ?? null);
+        $detailsItem->setEmail($visitsContact['email'] ?? null);
 
         $siteDom = $headerDom->filter('div > div > a');
         if ($siteDom->count()) {
@@ -59,7 +62,7 @@ class CollegeDetailsParser implements ParserInterface
      * @param Crawler $crawler
      * @return string|null
      */
-    private static function findPhone(Crawler $crawler): ?string
+    private static function findCampusVisitsContact(Crawler $crawler): ?array
     {
         if (!$crawler->filter('div.contacts-block')->count()) {
             return null;
@@ -67,14 +70,35 @@ class CollegeDetailsParser implements ParserInterface
         $contactsDom = $crawler->filter('div.school-contacts > div:nth-child(1) > div.col-sm-9 > div.row')->each(function ($node, $i) {
             return $node->text();
         });
+        $contact = null;
+        $address = null;
         $phone = null;
+        $email = null;
         foreach ($contactsDom as $text) {
+            if (strpos($text, 'Contact') !== false) {
+                $contact = trim(mb_substr($text, 8));
+                continue;
+            }
+            if (strpos($text, 'Address') !== false) {
+                $address = trim(mb_substr($text, 8));
+                continue;
+            }
             if (strpos($text, 'Phone') !== false) {
                 $phone = trim(mb_substr($text, 6));
-                break;
+                continue;
             }
+            if (strpos($text, 'Email') !== false) {
+                $email = trim(mb_substr($text, 6));
+                continue;
+            }
+
         }
-        return $phone;
+        return [
+            'contact' => $contact,
+            'address' => $address,
+            'phone' => $phone,
+            'email' => $email
+        ];
     }
 
 }

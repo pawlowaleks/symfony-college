@@ -4,8 +4,6 @@
 namespace App\Service;
 
 
-use App\Engine\College\DetailsEngine;
-use App\Engine\College\DetailsParser;
 use App\Engine\Engine\CollegeDetailsEngine;
 use App\Engine\Entity\CollegeDetailsItem;
 use App\Entity\College;
