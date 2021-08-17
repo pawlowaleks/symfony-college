@@ -74,6 +74,21 @@ class College implements TimestampableInterface
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $campusVisitingCenter;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $campusTours;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $onCampusInterview;
+
     public function __construct()
     {
         $this->major = new ArrayCollection();
@@ -222,6 +237,42 @@ class College implements TimestampableInterface
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getCampusVisitingCenter(): ?string
+    {
+        return $this->campusVisitingCenter;
+    }
+
+    public function setCampusVisitingCenter(?string $campusVisitingCenter): self
+    {
+        $this->campusVisitingCenter = $campusVisitingCenter;
+
+        return $this;
+    }
+
+    public function getCampusTours(): ?string
+    {
+        return $this->campusTours;
+    }
+
+    public function setCampusTours(?string $campusTours): self
+    {
+        $this->campusTours = $campusTours;
+
+        return $this;
+    }
+
+    public function getOnCampusInterview(): ?string
+    {
+        return $this->onCampusInterview;
+    }
+
+    public function setOnCampusInterview(?string $onCampusInterview): self
+    {
+        $this->onCampusInterview = $onCampusInterview;
 
         return $this;
     }

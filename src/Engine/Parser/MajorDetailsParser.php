@@ -5,7 +5,7 @@ namespace App\Engine\Parser;
 use App\Engine\Entity\MajorDetailsItem;
 use Symfony\Component\DomCrawler\Crawler;
 
-class MajorDetailsParser implements ParserInterface
+class MajorDetailsParser extends AbstractParser
 {
 
     private MajorDetailsItem $majorDetailsItem;

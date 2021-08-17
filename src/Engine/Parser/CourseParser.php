@@ -8,7 +8,7 @@ use App\Engine\Entity\SubjectItem;
 use DOMElement;
 use Symfony\Component\DomCrawler\Crawler;
 
-class CourseParser implements ParserInterface
+class CourseParser extends AbstractParser
 {
 
     public function parse(string $url, string $content, SubjectItem $subjectItem = null): ?CourseResult

@@ -7,7 +7,7 @@ use App\Engine\Entity\SubjectResult;
 use DOMElement;
 use Symfony\Component\DomCrawler\Crawler;
 
-class SubjectListParser implements ParserInterface
+class SubjectListParser extends AbstractParser
 {
 
     private string $url;

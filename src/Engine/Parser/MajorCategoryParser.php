@@ -4,12 +4,12 @@ namespace App\Engine\College;
 
 use App\Engine\Entity\MajorCategoryListItem;
 use App\Engine\Entity\MajorCategoryListResult;
-use App\Engine\Parser\ParserInterface;
+use App\Engine\Parser\AbstractParser;
 use DOMElement;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
 
-class MajorCategoryParser implements ParserInterface
+class MajorCategoryParser extends AbstractParser
 {
 
     private MajorCategoryListResult $majorCategoryListResult;

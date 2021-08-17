@@ -11,7 +11,7 @@ use Symfony\Component\DomCrawler\Crawler;
  * Class ListParser
  * @package App\Engine\College
  */
-class CollegeListParser implements ParserInterface
+class CollegeListParser extends AbstractParser
 {
 
     /**

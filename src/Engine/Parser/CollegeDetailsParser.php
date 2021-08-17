@@ -9,7 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
  * Class DetailsParser
  * @package App\Engine\College
  */
-class CollegeDetailsParser implements ParserInterface
+class CollegeDetailsParser extends AbstractParser
 {
     /**
      * @param string $url
@@ -115,7 +115,8 @@ class CollegeDetailsParser implements ParserInterface
         if (!$divDom->count()) {
             return null;
         }
-        return $divDom->text();
+        $text = $divDom->text(null, false);
+        return self::trimText($text);
     }
 
     /**
@@ -128,7 +129,8 @@ class CollegeDetailsParser implements ParserInterface
         if (!$divDom->count()) {
             return null;
         }
-        return $divDom->text();
+        $text = $divDom->text(null, false);
+        return self::trimText($text);
     }
 
     /**
@@ -141,7 +143,10 @@ class CollegeDetailsParser implements ParserInterface
         if (!$divDom->count()) {
             return null;
         }
-        return $divDom->text();
+        $text = $divDom->text(null, false);
+        return self::trimText($text);
     }
+
+
 
 }
