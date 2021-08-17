@@ -54,6 +54,10 @@ class CollegeDetailsParser implements ParserInterface
             $detailsItem->setSite($siteDom->attr('href'));
         }
 
+        $detailsItem->setCampusVisitingCenter(self::findCampusVisitingCenter($crawler));
+        $detailsItem->setCampusTours(self::findCampusTours($crawler));
+        $detailsItem->setOnCampusInterview(self::findOnCampusInterview($crawler));
+
         return $detailsItem;
     }
 
@@ -99,6 +103,45 @@ class CollegeDetailsParser implements ParserInterface
             'phone' => $phone,
             'email' => $email
         ];
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return string|null
+     */
+    private static function findCampusVisitingCenter(Crawler $crawler): ?string
+    {
+        $divDom = $crawler->filter('div.contacts-block > div.school-contacts > div:nth-child(5) > div.col-sm-9 > div:nth-child(1) > div:nth-child(2)');
+        if (!$divDom->count()) {
+            return null;
+        }
+        return $divDom->text();
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return string|null
+     */
+    private static function findCampusTours(Crawler $crawler): ?string
+    {
+        $divDom = $crawler->filter('div.contacts-block > div.school-contacts > div:nth-child(5) > div.col-sm-9 > div:nth-child(3) > div:nth-child(2)');
+        if (!$divDom->count()) {
+            return null;
+        }
+        return $divDom->text();
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return string|null
+     */
+    private static function findOnCampusInterview(Crawler $crawler): ?string
+    {
+        $divDom = $crawler->filter('div.contacts-block > div.school-contacts > div:nth-child(7) > div.col-sm-9');
+        if (!$divDom->count()) {
+            return null;
+        }
+        return $divDom->text();
     }
 
 }

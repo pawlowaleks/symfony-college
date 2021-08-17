@@ -24,6 +24,79 @@ class CollegeDetailsItem extends CollegeItem
     private ?string $email;
 
     /**
+     * @var string|null
+     */
+    private ?string $campusVisitingCenter;
+    /**
+     * @var string|null
+     */
+    private ?string $campusTours;
+
+    /** @var string|null $contact */
+    private ?string $contact;
+
+    /**
+     * @var string|null
+     */
+    private ?string $onCampusInterview;
+
+    /**
+     * @return string|null
+     */
+    public function getOnCampusInterview(): ?string
+    {
+        return $this->onCampusInterview;
+    }
+
+    /**
+     * @param string|null $onCampusInterview
+     */
+    public function setOnCampusInterview(?string $onCampusInterview): void
+    {
+        $this->onCampusInterview = $onCampusInterview;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getTitleLabels(): array
+    {
+        return ['Title', 'Address', 'Phone', 'Site'];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCampusVisitingCenter(): ?string
+    {
+        return $this->campusVisitingCenter;
+    }
+
+    /**
+     * @param string|null $campusVisitingCenter
+     */
+    public function setCampusVisitingCenter(?string $campusVisitingCenter): void
+    {
+        $this->campusVisitingCenter = $campusVisitingCenter;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCampusTours(): ?string
+    {
+        return $this->campusTours;
+    }
+
+    /**
+     * @param string|null $campusTours
+     */
+    public function setCampusTours(?string $campusTours): void
+    {
+        $this->campusTours = $campusTours;
+    }
+
+    /**
      * @return string|null
      */
     public function getEmail(): ?string
@@ -55,9 +128,19 @@ class CollegeDetailsItem extends CollegeItem
         $this->contact = $contact;
     }
 
-    /** @var string|null $contact */
-    private ?string $contact;
-
+    /**
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            $this->getTitle(),
+            $this->getAddress(),
+            $this->getPhone(),
+            $this->getSite()
+        ];
+    }
 
     /**
      * @return string|null
@@ -105,28 +188,6 @@ class CollegeDetailsItem extends CollegeItem
     public function setSite(?string $site): void
     {
         $this->site = $site;
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            $this->getTitle(),
-            $this->getAddress(),
-            $this->getPhone(),
-            $this->getSite()
-        ];
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getTitleLabels(): array
-    {
-        return ['Title', 'Address', 'Phone', 'Site'];
     }
 
 
