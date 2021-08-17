@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Engine\Entity\CollegeDetailsItem;
 use App\Engine\Entity\CollegeListItem;
 use App\Entity\College;
+use App\Entity\CollegeAcademics;
 use App\Entity\CollegeAdmissions;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -122,6 +123,12 @@ class CollegeRepository extends ServiceEntityRepository
         if (isset($collegeAdmissionsItem)) {
             $collegeAdmissions = $entityManager->getRepository(CollegeAdmissions::class)
                 ->saveCollegeAdmissionsItem($collegeAdmissionsItem, $college);
+        }
+
+        $collegeAcademicsItem = $item->getCollegeAcademicsItem();
+        if (isset($collegeAcademicsItem)) {
+            $collegeAcademics = $entityManager->getRepository(CollegeAcademics::class)
+                ->saveCollegeAcademicsItem($collegeAcademicsItem, $college);
         }
 
         return true;

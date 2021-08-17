@@ -65,6 +65,12 @@ class CollegeDetailsParser extends AbstractParser
             $detailsItem->setCollegeAdmissionsItem($collegeAdmissionItem);
         }
 
+        $collegeAcademicsParser = new CollegeAcademicsParser();
+        $collegeAcademicsItem = $collegeAcademicsParser->parse($url, $content);
+        if ($collegeAcademicsItem) {
+            $detailsItem->setCollegeAcademicsItem($collegeAcademicsItem);
+        }
+
 
         return $detailsItem;
     }

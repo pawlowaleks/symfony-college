@@ -47,18 +47,18 @@ class CollegeAdmissionsParser extends AbstractParser
 
         $gpaBreakDownDom = $crawler->filter('#adm-gpa > div.col-sm-9 > div > div.col-sm-4');
         if ($gpaBreakDownDom->count()) {
-            $collegeAdmissionsItem->setGpaBreakdown(self::trimText($gpaBreakDownDom->text()));
+            $collegeAdmissionsItem->setGpaBreakdown(self::trimText($gpaBreakDownDom->text(null, false)));
         }
 
         // #adm-scr > div.col-sm-9 > div
         $testScoresDom = $crawler->filter('#adm-scr > div.col-sm-9 > div');
         if ($testScoresDom->count()) {
-            $collegeAdmissionsItem->setTestScores(self::trimText($testScoresDom->text()));
+            $collegeAdmissionsItem->setTestScores(self::trimText($testScoresDom->text(null, false)));
         }
 
         $deadlinesDom = $crawler->filter('#adm-ddl > div.col-sm-9');
         if ($deadlinesDom) {
-            $collegeAdmissionsItem->setDeadlines(self::trimText($deadlinesDom->text()));
+            $collegeAdmissionsItem->setDeadlines(self::trimText($deadlinesDom->text(null, false)));
         }
 
 
