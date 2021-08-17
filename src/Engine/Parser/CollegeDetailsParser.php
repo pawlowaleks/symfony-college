@@ -58,6 +58,14 @@ class CollegeDetailsParser extends AbstractParser
         $detailsItem->setCampusTours(self::findCampusTours($crawler));
         $detailsItem->setOnCampusInterview(self::findOnCampusInterview($crawler));
 
+
+        $collegeAdmissionsParser = new CollegeAdmissionsParser();
+        $collegeAdmissionItem = $collegeAdmissionsParser->parse($url, $content);
+        if ($collegeAdmissionItem) {
+            $detailsItem->setCollegeAdmissionsItem($collegeAdmissionItem);
+        }
+
+
         return $detailsItem;
     }
 

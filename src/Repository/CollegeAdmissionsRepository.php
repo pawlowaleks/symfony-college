@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\Engine\Entity\CollegeAdmissionsItem;
+use App\Entity\College;
 use App\Entity\CollegeAdmissions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +51,33 @@ class CollegeAdmissionsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param CollegeAdmissionsItem $collegeAdmissionsItem
+     * @param College $college
+     * @return CollegeAdmissions
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function saveCollegeAdmissionsItem(CollegeAdmissionsItem $collegeAdmissionsItem, College $college): CollegeAdmissions
+    {
+        $entityManager = $this->getEntityManager();
+
+        $collegeAdmissions = $college->getCollegeAdmissions();
+        if (empty($collegeAdmissions)) {
+            $collegeAdmissions = new CollegeAdmissions();
+            $collegeAdmissions->setCollege($college);
+        }
+        $collegeAdmissions->setApplicants($collegeAdmissionsItem->getApplicants());
+        $collegeAdmissions->setAcceptanceRate($collegeAdmissionsItem->getAcceptanceRate());
+        $collegeAdmissions->setAverageHSGPA($collegeAdmissionsItem->getAverageHsgpa());
+        $collegeAdmissions->setGpaBreakdown($collegeAdmissionsItem->getGpaBreakdown());
+        $collegeAdmissions->setTestScores($collegeAdmissionsItem->getTestScores());
+        $collegeAdmissions->setDeadlines($collegeAdmissionsItem->getDeadlines());
+
+        $entityManager->persist($collegeAdmissions);
+        $entityManager->flush();
+        return $collegeAdmissions;
+    }
+
 }

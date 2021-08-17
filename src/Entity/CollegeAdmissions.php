@@ -30,7 +30,7 @@ class CollegeAdmissions
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $acceptansceRate;
+    private $acceptanceRate;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -81,14 +81,14 @@ class CollegeAdmissions
         return $this;
     }
 
-    public function getAcceptansceRate(): ?int
+    public function getAcceptanceRate(): ?int
     {
-        return $this->acceptansceRate;
+        return $this->acceptanceRate;
     }
 
-    public function setAcceptansceRate(?int $acceptansceRate): self
+    public function setAcceptanceRate(?int $acceptanceRate): self
     {
-        $this->acceptansceRate = $acceptansceRate;
+        $this->acceptanceRate = $acceptanceRate;
 
         return $this;
     }

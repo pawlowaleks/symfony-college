@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Engine\Entity\CollegeDetailsItem;
 use App\Engine\Entity\CollegeListItem;
 use App\Entity\College;
+use App\Entity\CollegeAdmissions;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -116,6 +117,13 @@ class CollegeRepository extends ServiceEntityRepository
 
         $entityManager->persist($college);
         $entityManager->flush();
+
+        $collegeAdmissionsItem = $item->getCollegeAdmissionsItem();
+        if (isset($collegeAdmissionsItem)) {
+            $collegeAdmissions = $entityManager->getRepository(CollegeAdmissions::class)
+                ->saveCollegeAdmissionsItem($collegeAdmissionsItem, $college);
+        }
+
         return true;
     }
 

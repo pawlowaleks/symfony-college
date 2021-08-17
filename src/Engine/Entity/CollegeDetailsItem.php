@@ -41,6 +41,11 @@ class CollegeDetailsItem extends CollegeItem
     private ?string $onCampusInterview;
 
     /**
+     * @var CollegeAdmissionsItem|null
+     */
+    private ?CollegeAdmissionsItem $collegeAdmissionsItem;
+
+    /**
      * @return string|null
      */
     public function getOnCampusInterview(): ?string
@@ -188,6 +193,22 @@ class CollegeDetailsItem extends CollegeItem
     public function setSite(?string $site): void
     {
         $this->site = $site;
+    }
+
+    /**
+     * @return CollegeAdmissionsItem|null
+     */
+    public function getCollegeAdmissionsItem(): ?CollegeAdmissionsItem
+    {
+        return $this->collegeAdmissionsItem;
+    }
+
+    /**
+     * @param CollegeAdmissionsItem|null $collegeAdmissionsItem
+     */
+    public function setCollegeAdmissionsItem(?CollegeAdmissionsItem $collegeAdmissionsItem): void
+    {
+        $this->collegeAdmissionsItem = $collegeAdmissionsItem;
     }
 
 
