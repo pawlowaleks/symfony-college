@@ -44,7 +44,8 @@ class CollegeCareersParser extends AbstractParser
 
         $careerServicesDom = $crawler->filter('#car-srv > div.col-sm-9 > div:nth-child(3)');
         if ($careerServicesDom->count()) {
-            $collegeCareersItem->setCareerServices($careerServicesDom->text());
+            $careerServices = self::trimText($careerServicesDom->text(null, false));
+            $collegeCareersItem->setCareerServices($careerServices);
         }
 
         $startingMedianSalary1Dom = $crawler->filter('#car-tcm > div.col-sm-9 > div:nth-child(2) > div.col-xs-5.col-sm-5.text-right > div');

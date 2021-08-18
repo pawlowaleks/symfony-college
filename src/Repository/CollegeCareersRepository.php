@@ -81,7 +81,7 @@ class CollegeCareersRepository extends ServiceEntityRepository
         $collegeCareers->setPercentHighJobMeaning($item->getPercentHighJobMeaning());
         $collegeCareers->setPercentSTEM($item->getPercentSTEM());
 
-        $collegeCareers->setRoiRating($collegeCareers->getRoiRating());
+        $collegeCareers->setRoiRating($item->getRoiRating());
 
         $entityManager->persist($collegeCareers);
         $entityManager->flush();
