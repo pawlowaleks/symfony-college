@@ -51,6 +51,27 @@ class CollegeDetailsItem extends CollegeItem
     private ?CollegeAcademicsItem $collegeAcademicsItem;
 
     /**
+     * @var CollegeCareersItem|null
+     */
+    private ?CollegeCareersItem $collegeCareersItem;
+
+    /**
+     * @return CollegeCareersItem|null
+     */
+    public function getCollegeCareersItem(): ?CollegeCareersItem
+    {
+        return $this->collegeCareersItem;
+    }
+
+    /**
+     * @param CollegeCareersItem|null $collegeCareersItem
+     */
+    public function setCollegeCareersItem(?CollegeCareersItem $collegeCareersItem): void
+    {
+        $this->collegeCareersItem = $collegeCareersItem;
+    }
+
+    /**
      * @return CollegeAcademicsItem|null
      */
     public function getCollegeAcademicsItem(): ?CollegeAcademicsItem
