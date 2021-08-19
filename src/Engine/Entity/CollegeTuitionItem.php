@@ -25,7 +25,7 @@ class CollegeTuitionItem extends AbstractEntity
     /**
      * @var string|null
      */
-    private ?string $financialAidStatistics;
+    private ?string $financialAidStatistic;
 
     private ?int $averageFreshmanTotalNeedBasedGiftAid;
 
@@ -86,7 +86,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getApplicationDeadlines(): ?string
     {
-        return $this->applicationDeadlines;
+        return $this->applicationDeadlines ?? null;
     }
 
     /**
@@ -102,7 +102,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getNotificationDate(): ?string
     {
-        return $this->notificationDate;
+        return $this->notificationDate ?? null;
     }
 
     /**
@@ -118,7 +118,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAverageFreshmanTotalNeedBasedGiftAid(): ?int
     {
-        return $this->averageFreshmanTotalNeedBasedGiftAid;
+        return $this->averageFreshmanTotalNeedBasedGiftAid ?? null;
     }
 
     /**
@@ -134,7 +134,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAverageUndergraduateTotalNeedBasedGiftAid(): ?int
     {
-        return $this->averageUndergraduateTotalNeedBasedGiftAid;
+        return $this->averageUndergraduateTotalNeedBasedGiftAid ?? null;
     }
 
     /**
@@ -150,7 +150,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAverageNeedBasedLoan(): ?int
     {
-        return $this->averageNeedBasedLoan;
+        return $this->averageNeedBasedLoan ?? null;
     }
 
     /**
@@ -166,7 +166,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getUndergraduatesWhoHaveBorrowedThroughAnyLoanProgram(): ?int
     {
-        return $this->undergraduatesWhoHaveBorrowedThroughAnyLoanProgram;
+        return $this->undergraduatesWhoHaveBorrowedThroughAnyLoanProgram ?? null;
     }
 
     /**
@@ -182,7 +182,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAverageAmountOfLoanDebtPerGraduate(): ?int
     {
-        return $this->averageAmountOfLoanDebtPerGraduate;
+        return $this->averageAmountOfLoanDebtPerGraduate ?? null;
     }
 
     /**
@@ -198,7 +198,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAverageAmountOfEachFreshmanScholarshipGrantPackage(): ?int
     {
-        return $this->averageAmountOfEachFreshmanScholarshipGrantPackage;
+        return $this->averageAmountOfEachFreshmanScholarshipGrantPackage ?? null;
     }
 
     /**
@@ -214,7 +214,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getFinancialAidProvidedToInternationalStudents(): ?bool
     {
-        return $this->financialAidProvidedToInternationalStudents;
+        return $this->financialAidProvidedToInternationalStudents ?? null;
     }
 
     /**
@@ -230,7 +230,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getTuitionInState(): ?int
     {
-        return $this->tuitionInState;
+        return $this->tuitionInState ?? null;
     }
 
     /**
@@ -246,7 +246,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getTuitionOutOfState(): ?int
     {
-        return $this->tuitionOutOfState;
+        return $this->tuitionOutOfState ?? null;
     }
 
     /**
@@ -262,7 +262,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getRequiredFees(): ?int
     {
-        return $this->requiredFees;
+        return $this->requiredFees ?? null;
     }
 
     /**
@@ -278,7 +278,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAverageCostForBooksAndSupplies(): ?int
     {
-        return $this->averageCostForBooksAndSupplies;
+        return $this->averageCostForBooksAndSupplies ?? null;
     }
 
     /**
@@ -294,7 +294,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getTuitionFeesVaryByYearOfStudy(): ?bool
     {
-        return $this->tuitionFeesVaryByYearOfStudy;
+        return $this->tuitionFeesVaryByYearOfStudy ?? null;
     }
 
     /**
@@ -310,7 +310,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getBoardForCommuters(): ?int
     {
-        return $this->boardForCommuters;
+        return $this->boardForCommuters ?? null;
     }
 
     /**
@@ -326,7 +326,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getTransportationForCommuters(): ?int
     {
-        return $this->transportationForCommuters;
+        return $this->transportationForCommuters ?? null;
     }
 
     /**
@@ -342,7 +342,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getOnCampusRoomAndBoard(): ?int
     {
-        return $this->onCampusRoomAndBoard;
+        return $this->onCampusRoomAndBoard ?? null;
     }
 
     /**
@@ -358,7 +358,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getFinancialAidMethodology(): ?string
     {
-        return $this->financialAidMethodology;
+        return $this->financialAidMethodology ?? null;
     }
 
     /**
@@ -374,7 +374,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getScholarshipsAndGrantsNeedBased(): ?string
     {
-        return $this->scholarshipsAndGrantsNeedBased;
+        return $this->scholarshipsAndGrantsNeedBased ?? null;
     }
 
     /**
@@ -390,7 +390,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getScholarshipsAndGrantsNonNeedBased(): ?string
     {
-        return $this->scholarshipsAndGrantsNonNeedBased;
+        return $this->scholarshipsAndGrantsNonNeedBased ?? null;
     }
 
     /**
@@ -406,7 +406,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getFederalDirectStudentLoanPrograms(): ?string
     {
-        return $this->federalDirectStudentLoanPrograms;
+        return $this->federalDirectStudentLoanPrograms ?? null;
     }
 
     /**
@@ -422,7 +422,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getFederalFamilyEducationLoanPrograms(): ?string
     {
-        return $this->federalFamilyEducationLoanPrograms;
+        return $this->federalFamilyEducationLoanPrograms ?? null;
     }
 
     /**
@@ -438,7 +438,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getIsInstitutionalEmploymentAvailable(): ?bool
     {
-        return $this->isInstitutionalEmploymentAvailable;
+        return $this->isInstitutionalEmploymentAvailable ?? null;
     }
 
     /**
@@ -454,7 +454,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getDirectLender(): ?bool
     {
-        return $this->directLender;
+        return $this->directLender ?? null;
     }
 
     /**
@@ -470,7 +470,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getDates(): ?string
     {
-        return $this->dates;
+        return $this->dates ?? null;
     }
 
     /**
@@ -486,7 +486,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getRequiredForms(): ?string
     {
-        return $this->requiredForms;
+        return $this->requiredForms ?? null;
     }
 
     /**
@@ -502,7 +502,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getFinancialAidStatistics(): ?string
     {
-        return $this->financialAidStatistics;
+        return $this->financialAidStatistics ?? null;
     }
 
     /**
@@ -518,7 +518,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getExpensesPerAcademicYear(): ?string
     {
-        return $this->expensesPerAcademicYear;
+        return $this->expensesPerAcademicYear ?? null;
     }
 
     /**
@@ -534,7 +534,7 @@ class CollegeTuitionItem extends AbstractEntity
      */
     public function getAvailableAid(): ?string
     {
-        return $this->availableAid;
+        return $this->availableAid ?? null;
     }
 
     /**

@@ -63,10 +63,10 @@ class CollegeFetchDetailsService extends AbstractService
 
         }
 
-        $collegeTuitionItem = $detailsItem->getCollegeTuitionItem();
-        if (isset($collegeTuitionItem)) {
-            $this->io->listing($collegeTuitionItem->toArray());
-        }
+//        $collegeTuitionItem = $detailsItem->getCollegeTuitionItem();
+//        if (isset($collegeTuitionItem)) {
+//            $this->io->listing($collegeTuitionItem->toArray());
+//        }
 
 
         return true;

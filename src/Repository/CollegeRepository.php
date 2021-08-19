@@ -8,6 +8,7 @@ use App\Entity\College;
 use App\Entity\CollegeAcademics;
 use App\Entity\CollegeAdmissions;
 use App\Entity\CollegeCareers;
+use App\Entity\CollegeTuition;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -136,6 +137,12 @@ class CollegeRepository extends ServiceEntityRepository
         if (isset($collegeCarersItem)) {
             $collegeCareers = $entityManager->getRepository(CollegeCareers::class)
                 ->saveCollegeCareersItem($collegeCarersItem, $college);
+        }
+
+        $collegeTuitionItem = $item->getCollegeTuitionItem();
+        if (isset($collegeTuitionItem)) {
+            $collegeTuition = $entityManager->getRepository(CollegeTuition::class)
+                ->saveCollegeTuitionItem($collegeTuitionItem, $college);
         }
 
         return true;
