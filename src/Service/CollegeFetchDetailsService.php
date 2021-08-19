@@ -60,6 +60,12 @@ class CollegeFetchDetailsService extends AbstractService
 //                ->setHeaders(CollegeDetailsItem::getTitleLabels())
                 ->setRows([$collegeCareersItem->toArray()]);
             $table->render();
+
+        }
+
+        $collegeTuitionItem = $detailsItem->getCollegeTuitionItem();
+        if (isset($collegeTuitionItem)) {
+            $this->io->listing($collegeTuitionItem->toArray());
         }
 
 
