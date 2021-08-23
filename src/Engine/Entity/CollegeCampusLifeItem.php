@@ -61,7 +61,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getOverview(): ?string
     {
-        return $this->overview;
+        return $this->overview ?? null;
     }
 
     /**
@@ -77,7 +77,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getUndergradsLivingOnCampus(): ?int
     {
-        return $this->undergradsLivingOnCampus;
+        return $this->undergradsLivingOnCampus ?? null;
     }
 
     /**
@@ -93,7 +93,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getHelpFindingOffCampusHousing(): ?bool
     {
-        return $this->helpFindingOffCampusHousing;
+        return $this->helpFindingOffCampusHousing ?? null;
     }
 
     /**
@@ -109,7 +109,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getQualityOfLifeRating(): ?int
     {
-        return $this->qualityOfLifeRating;
+        return $this->qualityOfLifeRating ?? null;
     }
 
     /**
@@ -125,7 +125,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getFirstYearStudentsLivingOnCampus(): ?int
     {
-        return $this->firstYearStudentsLivingOnCampus;
+        return $this->firstYearStudentsLivingOnCampus ?? null;
     }
 
     /**
@@ -141,7 +141,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getCampusEnvironment(): ?string
     {
-        return $this->campusEnvironment;
+        return $this->campusEnvironment ?? null;
     }
 
     /**
@@ -157,7 +157,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getFireSafetyRating(): ?int
     {
-        return $this->fireSafetyRating;
+        return $this->fireSafetyRating ?? null;
     }
 
     /**
@@ -173,7 +173,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getHousingOptions(): ?string
     {
-        return $this->housingOptions;
+        return $this->housingOptions ?? null;
     }
 
     /**
@@ -189,7 +189,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getCollegeEntranceTestsRequired(): ?bool
     {
-        return $this->collegeEntranceTestsRequired;
+        return $this->collegeEntranceTestsRequired ?? null;
     }
 
     /**
@@ -205,7 +205,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getInterviewRequired(): ?bool
     {
-        return $this->interviewRequired;
+        return $this->interviewRequired ?? null;
     }
 
     /**
@@ -221,7 +221,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getSpecialNeedServicesOffered(): ?string
     {
-        return $this->specialNeedServicesOffered;
+        return $this->specialNeedServicesOffered ?? null;
     }
 
     /**
@@ -237,7 +237,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getRegisteredStudentOrganizations(): ?int
     {
-        return $this->registeredStudentOrganizations;
+        return $this->registeredStudentOrganizations ?? null;
     }
 
     /**
@@ -253,7 +253,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getNumberOfHonorSocieties(): ?int
     {
-        return $this->numberOfHonorSocieties;
+        return $this->numberOfHonorSocieties ?? null;
     }
 
     /**
@@ -269,7 +269,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getNumberOfSocialSororities(): ?int
     {
-        return $this->numberOfSocialSororities;
+        return $this->numberOfSocialSororities ?? null;
     }
 
     /**
@@ -285,7 +285,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getNumberOfReligiousOrganizations(): ?int
     {
-        return $this->numberOfReligiousOrganizations;
+        return $this->numberOfReligiousOrganizations ?? null;
     }
 
     /**
@@ -301,7 +301,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getAthleticDivision(): ?string
     {
-        return $this->athleticDivision;
+        return $this->athleticDivision ?? null;
     }
 
     /**
@@ -317,7 +317,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getMenSports(): ?string
     {
-        return $this->menSports;
+        return $this->menSports ?? null;
     }
 
     /**
@@ -333,7 +333,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getWomenSports(): ?string
     {
-        return $this->womenSports;
+        return $this->womenSports ?? null;
     }
 
     /**
@@ -349,7 +349,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getStudentServices(): ?string
     {
-        return $this->studentServices;
+        return $this->studentServices ?? null;
     }
 
     /**
@@ -365,7 +365,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getSustainability(): ?string
     {
-        return $this->sustainability;
+        return $this->sustainability ?? null;
     }
 
     /**
@@ -381,7 +381,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getGreenRating(): ?int
     {
-        return $this->greenRating;
+        return $this->greenRating ?? null;
     }
 
     /**
@@ -397,7 +397,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getCampusSecurityReport(): ?string
     {
-        return $this->campusSecurityReport;
+        return $this->campusSecurityReport ?? null;
     }
 
     /**
@@ -413,7 +413,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getCampusWideInternetNetwork(): ?bool
     {
-        return $this->campusWideInternetNetwork;
+        return $this->campusWideInternetNetwork ?? null;
     }
 
     /**
@@ -429,7 +429,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getPercentOfClassroomsWithWirelessInternet(): ?int
     {
-        return $this->percentOfClassroomsWithWirelessInternet;
+        return $this->percentOfClassroomsWithWirelessInternet ?? null;
     }
 
     /**
@@ -445,7 +445,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getFeeForNetworkUse(): ?bool
     {
-        return $this->feeForNetworkUse;
+        return $this->feeForNetworkUse ?? null;
     }
 
     /**
@@ -461,7 +461,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getPartnershipsWithTechnologyCompanies(): ?bool
     {
-        return $this->partnershipsWithTechnologyCompanies;
+        return $this->partnershipsWithTechnologyCompanies ?? null;
     }
 
     /**
@@ -477,7 +477,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getPersonalComputerIncludedInTuitionForEachStudent(): ?bool
     {
-        return $this->personalComputerIncludedInTuitionForEachStudent;
+        return $this->personalComputerIncludedInTuitionForEachStudent ?? null;
     }
 
     /**
@@ -493,7 +493,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getDiscountsAvailableWithHardwareVendors(): ?bool
     {
-        return $this->discountsAvailableWithHardwareVendors;
+        return $this->discountsAvailableWithHardwareVendors ?? null;
     }
 
     /**
@@ -509,7 +509,7 @@ class CollegeCampusLifeItem extends AbstractEntity
      */
     public function getHardwareVendorsDescription(): ?string
     {
-        return $this->hardwareVendorsDescription;
+        return $this->hardwareVendorsDescription ?? null;
     }
 
     /**

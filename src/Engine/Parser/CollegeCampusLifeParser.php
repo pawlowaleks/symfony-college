@@ -210,7 +210,7 @@ class CollegeCampusLifeParser extends AbstractParser
         }
         $percentOfClassroomsWithWirelessInternet = $otherInformation->filter('div:nth-child(3) > div.col-xs-5.col-sm-5.text-right > div');
         if ($percentOfClassroomsWithWirelessInternet->count()) {
-            $this->item->setPercentOfClassroomsWithWirelessInternet((int)$percentOfClassroomsWithWirelessInternet);
+            $this->item->setPercentOfClassroomsWithWirelessInternet((int)$percentOfClassroomsWithWirelessInternet->text());
         }
         $feeForNetworkUse = $otherInformation->filter('div:nth-child(5) > div.col-xs-5.col-sm-5.text-right > div');
         if ($feeForNetworkUse->count()) {

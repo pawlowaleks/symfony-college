@@ -83,6 +83,12 @@ class CollegeDetailsParser extends AbstractParser
             $detailsItem->setCollegeTuitionItem($collegeTuitionItem);
         }
 
+        $collegeCamusLifeParser = new CollegeCampusLifeParser();
+        $collegeCamusLifeItem = $collegeCamusLifeParser->parse($url, $content);
+        if ($collegeCamusLifeItem) {
+            $detailsItem->setCollegeCampusLifeItem($collegeCamusLifeItem);
+        }
+
         return $detailsItem;
     }
 

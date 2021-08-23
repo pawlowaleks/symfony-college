@@ -7,6 +7,7 @@ use App\Engine\Entity\CollegeListItem;
 use App\Entity\College;
 use App\Entity\CollegeAcademics;
 use App\Entity\CollegeAdmissions;
+use App\Entity\CollegeCampusLife;
 use App\Entity\CollegeCareers;
 use App\Entity\CollegeTuition;
 use DateTimeImmutable;
@@ -143,6 +144,12 @@ class CollegeRepository extends ServiceEntityRepository
         if (isset($collegeTuitionItem)) {
             $collegeTuition = $entityManager->getRepository(CollegeTuition::class)
                 ->saveCollegeTuitionItem($collegeTuitionItem, $college);
+        }
+
+        $collegeCampusLifeItem = $item->getCollegeCampusLifeItem();
+        if (isset($collegeCampusLifeItem)) {
+            $collegeCampusLife = $entityManager->getRepository(CollegeCampusLife::class)
+                ->saveCollegeCampusLifeItem($collegeCampusLifeItem, $college);
         }
 
         return true;

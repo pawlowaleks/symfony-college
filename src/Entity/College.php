@@ -104,6 +104,11 @@ class College implements TimestampableInterface
      */
     private $collegeTuition;
 
+    /**
+     * @ORM\OneToOne(targetEntity=CollegeCampusLife::class, mappedBy="college", cascade={"persist", "remove"})
+     */
+    private $collegeCampusLife;
+
     public function __construct()
     {
         $this->major = new ArrayCollection();
@@ -354,6 +359,28 @@ class College implements TimestampableInterface
         }
 
         $this->collegeTuition = $collegeTuition;
+
+        return $this;
+    }
+
+    public function getCollegeCampusLife(): ?CollegeCampusLife
+    {
+        return $this->collegeCampusLife;
+    }
+
+    public function setCollegeCampusLife(?CollegeCampusLife $collegeCampusLife): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($collegeCampusLife === null && $this->collegeCampusLife !== null) {
+            $this->collegeCampusLife->setCollege(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($collegeCampusLife !== null && $collegeCampusLife->getCollege() !== $this) {
+            $collegeCampusLife->setCollege($this);
+        }
+
+        $this->collegeCampusLife = $collegeCampusLife;
 
         return $this;
     }
